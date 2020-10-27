@@ -1,0 +1,252 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam circledCharacterRadius 0
+skinparam circledCharacterFontSize 0
+skinparam monochrome true
+
+
+
+class GameB { 
+    -board: Board
+    -players: Player[]
+    -activePlayer: Player
+    -daysRemaining: int
+
+    +getCurrentPlayer(): Player
+    +getPlayerAreas(): Player[]
+    +move()
+    +takeRole()
+    +act()
+    +rehearse()
+    +upgrade()
+    +endTurn()
+    -checkStates()
+    -wrapDay()
+    -wrapGame()
+}
+class PlayerB { 
+    -name: String
+    -role: Role
+    -currentArea: Area
+
+    +move()
+    +takeRole()
+    +act()
+    +rehearse()
+    +upgrade()
+
+    +getName()
+}
+class BoardB {
+    -areas: Areas[]
+    -undealtSceneCards: SceneCard[]
+    -dealtSceneCards: SceneCard[]
+
+    +setupAreas()
+    +dealSceneCards()
+    +getCountRemainingScenes()
+    -shuffleSceneCards
+    +toString()
+}
+class AreaB {
+    -name: String
+    -shotTokenCount: int
+    -scene: SceneCard
+    -extraRoles: Role[]
+    -left: Area
+    -right: Area
+    -up: Area
+    -down: Area
+
+    +isValidMove()
+    +wrapScene()
+
+    +getName()
+    +getShotTokenCount()
+    +successfulShot()
+}
+class SceneCardB {
+    -starringRoles: Role[]
+    -isFlipped: boolean
+
+    +flip()
+}
+class RoleB {
+    -name: String
+    -rank: int
+
+    +canAct()
+}
+class TextProgramControllerB {
+    -game: Game
+
+    +main()
+    -parseInput()
+    -formatResponse()
+}
+
+
+
+class Area {
+    -areaName: String
+    -occupants: ArrayList<Player>
+    -neighbors: Area[]
+    -offCardRoles: Role[]
+    -shotTokenCount: int
+
+    +checkIsNeighbor(Area): boolean
+    +checkArea(): boolean
+    +addPlayer(Player): void
+    +removePlayer(Player): void
+    +takeRole(String, Player): boolean
+    +act(String, Player): boolean
+    +getShotTokenCount(): int
+    -searchRole(String): boolean
+}
+
+class Player {
+    -playerInfo: PlayerInfo
+    
+    +getPlayerInfo(): PlayerInfo
+    +rehearse(): void
+    +act(): void
+    +move(Area): void
+    +upgrade(Area, Bank): void
+    +setRole(Role): void
+    +setArea(Area): void
+}
+
+class PlayerInfo {
+    -name: String
+    -rank: int
+    -role: Role
+    -money: int
+    -credits: int
+    -successfulScenes: int
+    -currentArea: Area
+    -countRehearse: int
+
+    +getRole(): String
+    +getScore(): int
+    +getCredit(): double
+    +setRole(Role): void
+    +checkAct(): boolean
+    +setArea(Area): void
+}
+
+class Role {
+    -rank: int
+    -roleName: String
+    -availability: boolean
+    -credit: double
+    -level: int
+    -onCard: boolean
+
+    +checkAvailibity(): boolean
+    +checkOnCard(): boolean
+    +workSucceed(): boolean
+    +getLevel(): int
+    +checkRank(Player): boolean
+}
+
+class SceneCard {
+    -sceneName: String
+    -difficulty: int
+    -sceneValue: int
+    -onCardRoles: Role[]
+
+    +getAvailRole(): Role[]
+    +getActor(): Player[]
+    +getDifficulty(): int
+}
+
+class Bank{
+    -money: double
+    -credit: double
+    -token: int
+
+    +giveMoney(): double
+    -calcMoney(): double
+    -updateCredits(): double
+}
+
+class GameManager {
+    -board: Board
+    -playerManager: PlayerManager
+    -countDay: int
+
+    +endDayCheck(countDay): boolean
+    +constructScene(): void
+    +constructBoard(): void
+    -calcScore(Bank): double
+    +setScene(): void
+    +getCurrentPlayer(): PlayerInfo
+    +getPlayerAreas(): Player[]
+    +move(String): boolean
+    +takeRole(String): int 
+    /' -1 = invalid, 0 = fail, 1 = success '/
+    +act(): int[] 
+    /' 
+    arr[0]: -1 = invalid, 0 = fail, 1 = success 
+    arr[1]: $ amount
+    arr[2]: credit amount
+    '/
+    +rehearse()
+    +upgrade()
+    +endTurn()
+    -checkStates()
+    -wrapDay()
+    -wrapGame()
+}
+class Board {
+    -areas: Area[]
+    -undealtSceneCards: SceneCard 
+    -dealtSceneCards: SceneCard
+
+    +move(String, Player): boolean
+    +setupAreas(): void
+    +dealSceneCards(): void
+    +getNumberOfRemainingScenes(): int
+    +toString(): String
+    -shuffleSceneCards(): void
+    -searchArea(String): Area
+}
+/'
+maybe?
+class ReturnData {
+    invalid: boolean
+    didSucceed: boolean
+    money: int
+    credits: int
+    playerInfo: PlayerInfo
+}
+'/
+
+/' ask about fames?'/
+
+' Class Connections Brennan
+GameB --* "1" TextProgramControllerB
+PlayerB --* "2..8" GameB
+BoardB --* "1" GameB
+SceneCardB --* "40" BoardB
+SceneCardB --o "0..1" AreaB
+RoleB --o "0..4" AreaB
+RoleB --o "0..1" PlayerB
+RoleB --o "2..3" SceneCardB
+AreaB --* "12" BoardB
+AreaB --* "1" PlayerB
+
+' Class Connections Thannaree
+SceneCard --* "40" Board
+Area --* "12" Board
+Board --* "1" GameManager
+Role --o "0..4" SceneCard
+SceneCard --> Area
+Area --> GameManager
+Bank --> GameManager
+Role "1" -- "1" PlayerInfo
+PlayerInfo --* Player
+Player --* "2..8" GameManager
+Board --> Player
+GameManager --* "1" Controller
+@enduml
