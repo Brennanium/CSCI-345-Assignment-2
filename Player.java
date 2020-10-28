@@ -21,7 +21,7 @@ public class Player{
 
     }
 
-    public void upgrade(Area areaName, Bank credit){
+    public void upgrade(Area areaName){
 
     }
 

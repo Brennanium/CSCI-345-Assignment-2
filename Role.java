@@ -9,7 +9,7 @@ public class Role {
     private boolean onCard;
 
     public boolean checkAvailibity(){
-        boolean availibility;
+        boolean availibility = true;
         return availibility;
     }
 
