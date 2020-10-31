@@ -12,6 +12,11 @@ class Board {
     public void dealSceneCards() {
 
     }
+    public Area getAreaForString(String areaString) {
+        Area area = searchArea(areaString);
+
+        return area;
+    }
     public int getNumberOfRemainingScenes() {
         return 0;
     }

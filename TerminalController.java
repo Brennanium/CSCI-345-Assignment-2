@@ -1,6 +1,6 @@
 
 
-public class TextController {
+public class TerminalController {
     private static GameManager game;
     
     public static void main(String[] args) {

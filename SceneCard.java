@@ -5,6 +5,11 @@ class SceneCard {
     private int difficulty;
     private int sceneValue;
     private Role[] onCardRoles;
+    private boolean isActive;
+
+    public boolean getIsActive() {
+        return false;
+    }
 
     public Role[] getAvailRole(){
         return new Role[0];
