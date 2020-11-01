@@ -55,7 +55,8 @@ class Area {
                return offCardRoles[i];
          }
       }
-      return null;
+
+      return scene.getRoleForString(roleString);
     }
     
     public Role[] getOffCardRoles(){

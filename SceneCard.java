@@ -26,4 +26,14 @@ class SceneCard {
     public Role[] getOnCardRoles(){
       return onCardRoles;
     }
+
+    public Role getRoleForString(String roleString){
+        for(int i = 0; i < onCardRoles.length; i++){
+            if(onCardRoles[i].getRoleName().equals(roleString)){
+                  return onCardRoles[i];
+            }
+        }
+
+        return null;
+    }
 }
