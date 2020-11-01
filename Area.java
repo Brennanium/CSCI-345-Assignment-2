@@ -3,11 +3,10 @@ import java.util.ArrayList;
 class Area {
     private String areaName;
     private ArrayList<Player> occupants;
-    private Area[] neighbors;
+    private ArrayList<Area> neighbors;
     private Role[] offCardRoles;
     private int shotTokenCount;
     private boolean isSet;
-    private boolean isNeighbor;
     private boolean roleFree;
 
     public Area() {
@@ -15,15 +14,7 @@ class Area {
     }
 
     public boolean isNeighbor(Area area) {
-      //ArrayList <String> neighbor = new ArrayList<String>();
-      
-        if(neighbor.get(i).contains(Area)){
-            isNeighbor = true;
-         } else {
-            isNeighbor = false;
-         }
-      }
-      return isNeighbor;
+        return neighbors.contains(area);
     }
     
     public boolean isCastingOffice(){
@@ -33,7 +24,6 @@ class Area {
         return true;
     }
     public void addPlayer(Player p) {
-        ArrayList<Player> occupants = new ArrayList<Player>();
         occupants.add(p);
     }
     
@@ -64,15 +54,12 @@ class Area {
     }
     
     public boolean isRoleFree(Role role){
-      //ArrayList <String> roleList = new ArrayList<String>();
-      
-      for(int i = 0; i < role.size(); i++){
-         if(p.getRole.get(i).contains(p.getRole())){
-            roleFree = true; 
-         } else {
-            roleFree = false;
-         }
-      }
-        return roleFree;
+        for(int i = 0; i < occupants.size(); i++){
+            if(occupants.get(i).getRole() == role){
+                return false;
+            }
+        }
+
+        return true;
     }
 }
