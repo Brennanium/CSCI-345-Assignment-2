@@ -8,6 +8,7 @@ class Area {
     private int shotTokenCount;
     private boolean isSet;
     private boolean roleFree;
+    private SceneCard scene;
 
     public Area() {
 
@@ -48,9 +49,17 @@ class Area {
          shotTokenCount --;
     }
     
-    public Role getRoleForString(String roleString) {
-      
-        return new Role();
+    public Role getRoleForString(String roleString) { 
+      for(int i = 0; i < offCardRoles.length; i++){
+         if(offCardRoles[i].getRoleName().equals(roleString)){
+               return offCardRoles[i];
+         }
+      }
+      return null;
+    }
+    
+    public Role[] getOffCardRoles(){
+      return offCardRoles;
     }
     
     public boolean isRoleFree(Role role){

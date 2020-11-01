@@ -22,4 +22,8 @@ class SceneCard {
     public int getDifficulty(){
         return difficulty;
     }
+    
+    public Role[] getOnCardRoles(){
+      return onCardRoles;
+    }
 }

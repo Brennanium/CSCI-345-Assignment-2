@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Role {
     private int rank;
-    private String[] roleName;
+    private String roleName;
     private double credit;
     private int level;
     private boolean onCard;
@@ -26,5 +26,9 @@ public class Role {
 
     public int getRank() {
         return rank;
+    }
+    
+    public String getRoleName() {
+      return roleName;
     }
 }
