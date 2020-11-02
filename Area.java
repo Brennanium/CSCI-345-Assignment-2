@@ -7,22 +7,39 @@ class Area {
     private Role[] offCardRoles;
     private int shotTokenCount;
     private boolean isSet;
-    private boolean roleFree;
     private SceneCard scene;
 
     public Area() {
 
     }
 
+    // getters
+    public String getName() {
+        return areaName;
+    }
+    public boolean getIsSet() {
+        return isSet;
+    }
+    public int getBudget() {
+        return scene.getBudget();
+    }
+    public int getShotTokenCount() {
+        return shotTokenCount;
+    }
+    public Role[] getOffCardRoles(){
+        return offCardRoles;
+    }
+
+    public void setSceneCard(SceneCard scene){
+        this.scene = scene;
+    }
+    
     public boolean isNeighbor(Area area) {
         return neighbors.contains(area);
     }
     
     public boolean isCastingOffice(){
-        return false;
-    }
-    public boolean checkArea() {
-        return true;
+        return areaName.equals("Casting Office");
     }
     public void addPlayer(Player p) {
         occupants.add(p);
@@ -32,21 +49,8 @@ class Area {
         occupants.remove(p);
     }
     
-    
-    public int getShotTokenCount() {
-        return 0;
-    }
-    
-    public boolean getIsSet() {
-        return isSet;
-    }
-    
-    public int getBudget() {
-        return 0;
-    }
-    
     public void removeShotToken(){
-         shotTokenCount --;
+         shotTokenCount--;
     }
     
     public Role getRoleForString(String roleString) { 
@@ -57,10 +61,6 @@ class Area {
       }
 
       return scene.getRoleForString(roleString);
-    }
-    
-    public Role[] getOffCardRoles(){
-      return offCardRoles;
     }
     
     public boolean isRoleFree(Role role){

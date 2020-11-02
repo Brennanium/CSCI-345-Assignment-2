@@ -1,6 +1,3 @@
-import java.io.*;
-import java.util.*;
-
 public class Player{
 
     private String name;
@@ -10,33 +7,47 @@ public class Player{
     private int credits;
     private int successfulScenes;
     private Area currentArea;
-    private int countRehearse;
     private int practiceChips;
 
-    public void setRole(Role roleName){
-      this.role = roleName;
+    public String getName() {
+        return name;
     }
-    
-    public Role getRole(){
-        return role;
-    }
-    
     public int getRank() {
         return pRank;
     }
+    public Role getRole(){
+        return role;
+    }
+    public int getDollars() {
+        return dollars;
+    }
+    public int getCredits() {
+        return credits;
+    }
+    public int getSuccessfulScenes() {
+        return successfulScenes;
+    }
+    public Area getCurrentArea() {
+        return currentArea;
+    }
+    public int getPracticeChips() {
+        return practiceChips;
+    }
     
+
     public void setRank(int newRank){
         pRank = newRank;
     }
-    
-    public int getPracticeChips() {
-        return 0;
+    public void setRole(Role roleName){
+        this.role = roleName;
     }
-    
     public void addPracticeChip(){
-         this.practiceChips += practiceChips;    
+         this.practiceChips++;    
     }
-    
+    // convenience method
+    public void rehearse(){
+        addPracticeChip();    
+    }
     public void resetPracticeChips(){
          this.practiceChips = 0;  
     }
@@ -50,6 +61,9 @@ public class Player{
         this.credits += credits;
     }
     
+    public void wrapScene() {
+        successfulScenes++;
+    }
     public boolean canAfford(int dollars, int credits) {
         return this.dollars >= dollars && this.credits >= credits;
     }
@@ -58,10 +72,6 @@ public class Player{
         this.dollars -= dollars;
         this.credits -= credits;
     }
-    
-    public Area getCurrentArea() {
-        return currentArea;
-    }
 
     public boolean isRoleValid(Role checkRank){
       if(pRank >= checkRank.getRank()){
@@ -69,5 +79,9 @@ public class Player{
       } else {
          return false;
       }
-   }   
+    }
+
+    public String toString() {
+        return "";
+    }
 }
