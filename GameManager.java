@@ -1,6 +1,17 @@
 class GameManager {
+    private final int DEFAULT_NUM_OF_PLAYERS = 2;
+    private final String DEFAULT_XML_FILEPATH = "[ default filepath ]";
+
+
     private Board board;
     private int countDay;
+
+    public GameManager(int numberOfPlayers) {
+
+    }
+    public GameManager() {
+        
+    }
 
     public boolean endDayCheck() {
         return true;

@@ -1,8 +1,14 @@
 public class Deadwood {
     static void main(String[] args){
-        //Model model = new Model();
-        //View view = new TerminalView();
+        GameManager model;
+        if(args.length > 0) {
+            model = new GameManager(Integer.parseInt(args[0]));
+        } else {
+            model = new GameManager();
+        }
         
-        //new TerminalController(model, view);
+        ActionManager modelModifier = new ActionManager(model);
+        
+        new TerminalController(model, modelModifier);
     }
 }

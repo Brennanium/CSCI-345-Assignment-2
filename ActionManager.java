@@ -2,9 +2,10 @@ import java.util.*;
 
 public class ActionManager {
     private GameManager game;
-    private TerminalController controller;
     
-    
+    public ActionManager(GameManager game){
+        this.game = game;
+    }
     
     public boolean move(String areaString) {
         Player currentPlayer = game.getCurrentPlayer();
@@ -93,6 +94,9 @@ public class ActionManager {
 
 
         return true;
+    }
+    public Event[] end() {
+        return new Event[0];
     }
 
     private int rollDie() {
