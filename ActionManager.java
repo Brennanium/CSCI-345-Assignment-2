@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class ActionManager {
-    private GameManager game;
+    private Game game;
     
-    public ActionManager(GameManager game){
+    public ActionManager(Game game){
         this.game = game;
     }
     

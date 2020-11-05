@@ -1,10 +1,10 @@
 public class Deadwood {
     static void main(String[] args){
-        GameManager model;
+        Game model;
         if(args.length > 0) {
-            model = new GameManager(Integer.parseInt(args[0]));
+            model = new Game(Integer.parseInt(args[0]));
         } else {
-            model = new GameManager();
+            model = new Game();
         }
         
         ActionManager modelModifier = new ActionManager(model);

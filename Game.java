@@ -1,4 +1,4 @@
-class GameManager {
+class Game {
     private final int DEFAULT_NUM_OF_PLAYERS = 2;
     private final String DEFAULT_XML_FILEPATH = "[ default filepath ]";
 
@@ -6,10 +6,10 @@ class GameManager {
     private Board board;
     private int countDay;
 
-    public GameManager(int numberOfPlayers) {
+    public Game(int numberOfPlayers) {
 
     }
-    public GameManager() {
+    public Game() {
         
     }
 

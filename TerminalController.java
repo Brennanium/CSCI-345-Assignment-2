@@ -1,10 +1,10 @@
 
 
 public class TerminalController {
-    private GameManager model;
+    private Game model;
     private ActionManager modelModifier;
     
-    public TerminalController(GameManager model, ActionManager modelModifier) {
+    public TerminalController(Game model, ActionManager modelModifier) {
         this.model = model;
         this.modelModifier = modelModifier;
 
