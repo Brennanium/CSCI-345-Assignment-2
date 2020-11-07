@@ -1,3 +1,7 @@
+package deadwood;
+
+import deadwood.model.*;
+
 public class Deadwood {
     static void main(String[] args){
         Game model;

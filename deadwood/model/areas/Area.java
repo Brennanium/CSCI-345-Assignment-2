@@ -1,6 +1,10 @@
+package deadwood.model.areas;
+
+import deadwood.model.*;
+
 import java.util.ArrayList;
 
-class Area {
+public abstract class Area {
     private String areaName;
     private ArrayList<Player> occupants;
     private ArrayList<Area> neighbors;
@@ -9,8 +13,12 @@ class Area {
     private boolean isSet;
     private SceneCard scene;
 
-    public Area() {
+    public Area(String name, ArrayList<Area> neighbors, Role[] roles) {
 
+    }
+
+    public Area(){
+        
     }
 
     // getters

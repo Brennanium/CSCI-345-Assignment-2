@@ -1,3 +1,7 @@
+
+package deadwood.model;
+
+
 public class Role {
     private int rank;
     private String roleName;

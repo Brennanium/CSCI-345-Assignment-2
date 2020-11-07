@@ -1,6 +1,6 @@
-//import java.util.*;
+package deadwood.model;
 
-class SceneCard {
+public class SceneCard {
     private String sceneName;
     private int difficulty;
     private int sceneBudget;

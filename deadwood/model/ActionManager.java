@@ -1,3 +1,7 @@
+package deadwood.model;
+
+import deadwood.model.areas.*;
+
 import java.util.*;
 
 public class ActionManager {

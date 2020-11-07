@@ -1,4 +1,12 @@
-class Game {
+//Brennan
+
+
+package deadwood.model;
+
+import deadwood.model.areas.*;
+
+
+public class Game {
     private final int DEFAULT_NUM_OF_PLAYERS = 2;
     private final String DEFAULT_XML_FILEPATH = "[ default filepath ]";
 
@@ -29,7 +37,9 @@ class Game {
 
     }
     public Area getAreaForString(String areaString) {
-        return board.getAreaForString(areaString);
+        return new Set();
+        
+        //board.getAreaForString(areaString);
     }
     public Player getCurrentPlayer() {
         return new Player();

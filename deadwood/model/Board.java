@@ -1,3 +1,8 @@
+package deadwood.model;
+
+import deadwood.model.areas.*;
+import deadwood.model.areas.Set;
+
 import java.util.*;
 import java.util.stream.*;
 
@@ -13,7 +18,7 @@ class Board {
         }
     }
     public void dealSceneCards() {
-        ArrayList<Area> sets = getSets();
+        ArrayList<Set> sets = getSets();
 
         if(sets.size() <= undealtSceneCards.size()){
             sets.forEach(a -> a.setSceneCard(getRandomSceneCard()));
@@ -28,11 +33,12 @@ class Board {
     public int getNumberOfRemainingScenes() {
         return undealtSceneCards.size();
     }
-    private ArrayList<Area> getSets() {
-        List<Area> sets = areas.stream()
+    private ArrayList<Set> getSets() {
+        List<Set> sets = areas.stream()
             .filter(a -> a.getIsSet())
+            .map((Area a) -> (Set)a)
             .collect(Collectors.toList());
-        return new ArrayList<Area>(sets);
+        return new ArrayList<Set>(sets);
     }
     private SceneCard getRandomSceneCard() {
         int randomIndex = (int)((Math.random()*undealtSceneCards.size()));

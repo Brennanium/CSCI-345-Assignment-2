@@ -1,4 +1,6 @@
+package deadwood;
 
+import deadwood.model.*;
 
 public class TerminalController {
     private Game model;
