@@ -51,7 +51,7 @@ public class XMLParser {
       Area area;
       String areaName;
       int takes;
-      
+
       NodeList parts;
       Node part;
       ArrayList<Role> roles = new ArrayList<Role>();
@@ -109,7 +109,8 @@ public class XMLParser {
    //Thannaree
    public ArrayList<SceneCard> readSceneData(Document d){
 
-      ArrayList info = new ArrayList<>();
+      ArrayList<SceneCard> info = new ArrayList<SceneCard>();
+      SceneCard scene;
    
       Element root = d.getDocumentElement();
       
@@ -120,20 +121,27 @@ public class XMLParser {
          
          //reads data from the nodes
          Node card = cards.item(i);
-         info.add(SceneCard);
          
          String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
          String image = card.getAttributes().getNamedItem("img").getNodeValue();
-         String budget = card.getAttributes().getNamedItem("budget").getNodeValue();
+         int budget = Integer.parseInt(card.getAttributes().getNamedItem("budget").getNodeValue());
          //System.out.println("Category = "+bookCategory);
          
+         //initialize new SceneCard
+         scene = new SceneCard(cardName, 0, budget); 
+         //add new scene to ArrayList
+         info.add(scene);
+
+
          //reads data
                                     
          NodeList children = card.getChildNodes();
-         
+      
+         /*
          for (int j=0; j< children.getLength(); j++){
             
             Node sub = children.item(j);
+            
             
             if("scene".equals(sub.getNodeName())){
                String sceneNum = sub.getAttributes().getNamedItem("number").getNodeValue();
@@ -165,8 +173,8 @@ public class XMLParser {
                         
          
          } //for childnodes
-         
-         //System.out.println("\n");
+         */
+
             
       }//for book nodes
 
