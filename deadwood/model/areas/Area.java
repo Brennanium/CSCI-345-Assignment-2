@@ -9,29 +9,29 @@ public abstract class Area {
     protected ArrayList<Player> occupants;
     private ArrayList<Area> neighbors;
     private boolean isSet;
-    private int coordX;
+/*     private int coordX;
     private int coordY;
     private int coordH;
-    private int coordW;
+    private int coordW; */
 
     public Area(String name, ArrayList<Area> neighbors, Role[] roles) {
 
     }
 
     public Area(String name) {
-
+        areaName = name;
     }
 
     public Area() {
 
     }
 
-    public Area(int x, int y, int h, int w){
+/*     public Area(int x, int y, int h, int w){
         coordX = x;
         coordY = y;
         coordH = h;
         coordW = w;
-    }
+    } */
 
     // getters
     public String getName() {
@@ -56,6 +56,9 @@ public abstract class Area {
         this.neighbors = neighbors;
     }
     
+    public ArrayList<Area> getNeighbors(){
+        return neighbors;
+    }
     public void removePlayer(Player p) {
         occupants.remove(p);
     }

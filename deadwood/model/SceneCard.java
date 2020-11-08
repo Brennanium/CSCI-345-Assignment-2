@@ -7,12 +7,15 @@ public class SceneCard {
     private boolean isActive;
     private int sceneNumber;
     private String sceneDescr;
+    private String image;
 
-    public SceneCard(String name, int number, int budget, String descr){
+    public SceneCard(String name, int number, int budget, String descr, Role[] roles, String img){
         sceneName = name;
         sceneNumber = number;
         sceneBudget = budget;
         sceneDescr = descr;
+        onCardRoles = roles;
+        image = img;
     }
 
     // getters
@@ -27,6 +30,9 @@ public class SceneCard {
     }
     public int getBudget() {
         return sceneBudget;
+    }
+    public String getImageString(){
+        return image;
     }
     public boolean getIsActive() {
         return isActive;

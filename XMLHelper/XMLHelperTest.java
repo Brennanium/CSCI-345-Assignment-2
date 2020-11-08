@@ -1,3 +1,4 @@
+package XMLHelper;
 // Example Code for parsing XML file
 // Dr. Moushumi Sharmin
 // CSCI 345
@@ -5,7 +6,7 @@
 import org.w3c.dom.Document;
 
 
-public class XMLTest{
+public class XMLHelperTest{
 
    public static void main(String args[]){
    

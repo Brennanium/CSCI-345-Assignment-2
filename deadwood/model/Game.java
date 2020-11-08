@@ -1,10 +1,13 @@
 //Brennan
 
-
 package deadwood.model;
 
 import deadwood.model.areas.*;
+import deadwood.XML.*;
 
+import java.util.ArrayList;
+
+import org.w3c.dom.Document;
 
 public class Game {
     private final int DEFAULT_NUM_OF_PLAYERS = 2;
@@ -15,10 +18,30 @@ public class Game {
     private int countDay;
 
     public Game(int numberOfPlayers) {
-
+        initFromXML();
     }
+
     public Game() {
         
+    }
+
+    private void initFromXML() {
+        Document doc1 = null;
+        Document doc2 = null;
+        XMLParser parsing = new XMLParser();
+        ArrayList<SceneCard> scenes;
+        ArrayList<Area> areas;  
+        
+        try {
+            doc1 = parsing.getDocFromFile("./CSCI-345-Assignment-2/deadwood/XML/cards.xml");
+            scenes = parsing.readSceneData(doc1);
+
+            doc2 = parsing.getDocFromFile("./CSCI-345-Assignment-2/deadwood/XML/board.xml");
+            areas = parsing.readAreaData(doc2);
+
+        }  catch(Exception e){
+            System.out.println("Error = " + e);
+        }
     }
 
     public boolean endDayCheck() {
