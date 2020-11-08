@@ -50,6 +50,8 @@ public class XMLParser {
       ArrayList<Area> areas = new ArrayList<Area>();
       Area area;
       String areaName;
+      int takes;
+      
       NodeList parts;
       Node part;
       ArrayList<Role> roles = new ArrayList<Role>();
