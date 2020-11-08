@@ -4,15 +4,13 @@ import deadwood.model.*;
 
 public class Deadwood {
     static void main(String[] args){
-        Game model;
+        ActionManager model;
         if(args.length > 0) {
-            model = new Game(Integer.parseInt(args[0]));
+            model = new ActionManager(Integer.parseInt(args[0]));
         } else {
-            model = new Game();
+            model = new ActionManager(2);
         }
         
-        ActionManager modelModifier = new ActionManager(model);
-        
-        new TerminalController(model, modelModifier);
+        new TerminalController(model);
     }
 }

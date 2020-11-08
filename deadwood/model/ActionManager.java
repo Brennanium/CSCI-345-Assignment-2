@@ -8,8 +8,8 @@ import java.util.*;
 public class ActionManager {
     private Game game;
     
-    public ActionManager(Game game){
-        this.game = game;
+    public ActionManager(int numOfPlayers){
+        game = new Game(numOfPlayers);
     }
     
     public boolean move(String areaString) {
@@ -111,6 +111,12 @@ public class ActionManager {
             return true;
         }
     }
+
+
+	public void getCurrentPlayer() {
+    
+    }
+    
     public Event[] end() {
         return new Event[0];
     }
@@ -120,4 +126,5 @@ public class ActionManager {
         int max = 6;
         return (int) (Math.random() * (max - min + 1) + min);
     }
+
 }
