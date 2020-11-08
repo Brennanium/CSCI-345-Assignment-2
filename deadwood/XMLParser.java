@@ -117,9 +117,9 @@ public class XMLParser {
          
          //reads data from the nodes
          Node card = cards.item(i);
-         String cardName = cards.getAttributes().getNamedItem("name").getNodeValue();
-         String image = cards.getAttributes().getNamedItem("img").getNodeValue();
-         String budget = cards.getAttributes().getNamedItem("budget").getNodeValue();
+         String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
+         String image = card.getAttributes().getNamedItem("img").getNodeValue();
+         String budget = card.getAttributes().getNamedItem("budget").getNodeValue();
          //System.out.println("Category = "+bookCategory);
          
          //reads data

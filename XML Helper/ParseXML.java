@@ -1,3 +1,4 @@
+
 // Example Code for parsing XML file
 // Dr. Moushumi Sharmin
 // CSCI 345
@@ -15,7 +16,7 @@ import java.io.File;
 
 public class ParseXML{
 
-   
+   /*
    // building a document from the XML file
    // returns a Document object after loading the book.xml file.
    public Document getDocFromFile(String filename) throws ParserConfigurationException {
@@ -34,6 +35,71 @@ public class ParseXML{
       // exception handling
    
    }  
+
+   public ArrayList<Area> readAreaData(Document d){
+   
+      Element root = d.getDocumentElement();
+      
+      NodeList sets = root.getElementsByTagName("set");
+      Node set;
+      NodeList trailer = root.getElementsByTagName("trailer");
+      NodeList office = root.getElementsByTagName("office");
+
+      ArrayList<Area> areas = new ArrayList<Area>();
+      Area area;
+      String areaName;
+      NodeList parts;
+      Node part;
+      ArrayList<Role> roles = new ArrayList<Role>();
+      Role role;
+      
+      for (int i=0; i<sets.getLength();i++){
+         
+         //reads data from the nodes
+         set = sets.item(i);
+         areaName = set.getAttributes().getNamedItem("name").getNodeValue();
+         
+         //reads data
+                                    
+         parts = set.getAttributes().getNamedItem("parts").getChildNodes();
+         for (int j=0; j< parts.getLength(); j++){
+            
+            part = parts.item(j);
+            
+            if("title".equals(part.getNodeName())){
+               String bookLanguage = part.getAttributes().getNamedItem("lang").getNodeValue();
+               System.out.println("Language = "+bookLanguage);
+               String title = part.getTextContent();
+               System.out.println("Title = "+title);
+               
+            }
+            
+            else if("author".equals(part.getNodeName())){
+               String authorName = part.getTextContent();
+               System.out.println(" Author = "+authorName);
+               
+            }
+            else if("year".equals(part.getNodeName())){
+               String yearVal = part.getTextContent();
+               System.out.println(" Publication Year = "+yearVal);
+               
+            }
+            else if("price".equals(part.getNodeName())){
+               String priceVal = part.getTextContent();
+               System.out.println(" Price = "+priceVal);
+               
+            }
+                        
+         
+         } //for childnodes
+         
+         System.out.println("\n");
+            
+      }//for book nodes
+
+      return new ArrayList<Area>(0);
+   
+   }// method
         
    // reads data from XML file and prints data
    public void readBookData(Document d){
@@ -92,7 +158,7 @@ public class ParseXML{
    
    }// method
 
-    
+    */
 
 
 
