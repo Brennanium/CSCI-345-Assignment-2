@@ -7,6 +7,12 @@ public class SceneCard {
     private Role[] onCardRoles;
     private boolean isActive;
 
+    public SceneCard(String name, int diff, int budget){
+        sceneName = name;
+        difficulty = diff;
+        sceneBudget = budget;
+    }
+
     // getters
     public String getSceneName() {
         return sceneName;
