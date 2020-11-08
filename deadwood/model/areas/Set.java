@@ -5,11 +5,48 @@ import java.util.ArrayList;
 import deadwood.model.*;
 
 public class Set extends Area{
-    public Set(String name, ArrayList<Area> neighbors, Role[] roles) {
-        super(name, neighbors, roles);
+    private Role[] offCardRoles;
+    private int shotTokenCount;
+    private SceneCard scene;
+
+    public Set(String name, int shotTokenCount, Role[] roles) {
+        super(name);
+        
+        this.shotTokenCount = shotTokenCount;
+        offCardRoles = roles;
     }
 
     public Set(){
         super();
     }
+
+
+    public int getShotTokenCount() {
+        return shotTokenCount;
+    }
+    public Role[] getOffCardRoles(){
+        return offCardRoles;
+    }
+
+    public void removeShotToken(){
+        shotTokenCount--;
+    }
+
+    public int getBudget() {
+        return scene.getBudget();
+    }
+
+    public void setSceneCard(SceneCard scene){
+        this.scene = scene;
+    }
+   
+   public Role getRoleForString(String roleString) { 
+     for(int i = 0; i < offCardRoles.length; i++){
+        if(offCardRoles[i].getRoleName().equals(roleString)){
+              return offCardRoles[i];
+        }
+     }
+
+     return scene.getRoleForString(roleString);
+   }
 }

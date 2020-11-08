@@ -15,9 +15,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class XMLParser {
 
+
+   private ArrayList<Area> areas = new ArrayList<Area>();
    
    // building a document from the XML file
    // returns a Document object after loading the book.xml file.
@@ -45,12 +48,13 @@ public class XMLParser {
       
       NodeList sets = root.getElementsByTagName("set");
       Node set;
-      NodeList trailer = root.getElementsByTagName("trailer");
-      NodeList office = root.getElementsByTagName("office");
+      Node trailer = root.getAttributes().getNamedItem("trailer");
+      Node office = root.getAttributes().getNamedItem("office");
 
-      ArrayList<Area> areas = new ArrayList<Area>();
       Area area;
       String areaName;
+      int takes;
+
       NodeList parts;
       Node part;
       String roleName;
@@ -75,17 +79,87 @@ public class XMLParser {
             rank = Integer.parseInt(part.getAttributes().getNamedItem("level").getNodeValue());
             description = part.getAttributes().getNamedItem("line").getTextContent();
 
-            roles.add(new Role(roleName, rank, description, true));
+            roles.add(new Role(roleName, rank, description, false));
          }
          
-         
-         
+         //initialize Set
+         area = new Set(areaName, takes, (Role[])roles.toArray());
+         areas.add(area);
             
       }//for book nodes
 
-      return new ArrayList<Area>(0);
+
+      //tailers
+      if(trailer != null)
+         areas.add(new Trailers());
+
+      
+      //casting office
+      if(office != null){
+         areas.add(new CastingOffice());
+         //setup upgrade
+      }
+
+      //add neighbors to sets
+      NodeList neighborNodes;
+      for (int i=0; i<sets.getLength();i++){
+         set = sets.item(i);
+         String name = set.getAttributes().getNamedItem("name").getNodeValue();
+         area = areas.stream()
+            .filter(a -> a.getName().equals(name))
+            .findAny()
+            .orElse(null);
+         if(area == null) continue;
+
+
+         neighborNodes = set.getAttributes().getNamedItem("neighbors").getChildNodes();
+
+         addNeighbors(area, neighborNodes);
+      }
+      
+      //add neighbors to trailers
+      area = areas.stream()
+         .filter(a -> a instanceof Trailers)
+         .findAny()
+         .orElse(null);
+      if(area != null){
+         neighborNodes = trailer.getAttributes().getNamedItem("neighbors").getChildNodes();
+
+         addNeighbors(area, neighborNodes);
+      }
+
+      //add neighbors to casting office
+      area = areas.stream()
+         .filter(a -> a instanceof CastingOffice)
+         .findAny()
+         .orElse(null);
+      if(area != null){
+         neighborNodes = office.getAttributes().getNamedItem("neighbors").getChildNodes();
+
+         addNeighbors(area, neighborNodes);
+      }
+
+      return areas;
    
-   }// method
+   }
+
+   private void addNeighbors(Area area, NodeList neighborNodes){
+      Node neighborNode;
+      ArrayList<Area> neighbors = new ArrayList<Area>();
+      ArrayList<String> neighborNames = new ArrayList<String>();
+      for (int i=0; i<neighborNodes.getLength();i++){
+         neighborNode = neighborNodes.item(i);
+         neighborNames.add(neighborNode.getAttributes().getNamedItem("name").getNodeValue());
+      }
+
+      neighbors = new ArrayList<Area>(
+         areas.stream()
+            .filter(a -> neighborNames.contains(a.getName()))
+            .collect(Collectors.toList())
+      );
+
+      area.setNeighbors(neighbors);
+   }
 
 
    //Thannaree
@@ -106,7 +180,7 @@ public class XMLParser {
          
          String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
          String image = card.getAttributes().getNamedItem("img").getNodeValue();
-         int budget = card.getAttributes().getNamedItem("budget").getNodeValue();
+         int budget = Integer.parseInt(card.getAttributes().getNamedItem("budget").getNodeValue());
          //System.out.println("Category = "+bookCategory);
          
          //initialize new SceneCard

@@ -6,7 +6,7 @@ import deadwood.model.*;
 
 
 public class CastingOffice extends Area {
-    public CastingOffice(String name, ArrayList<Area> neighbors, Role[] roles) {
-        super(name, neighbors, roles);
+    public CastingOffice() {
+        super("office");
     }
 }
