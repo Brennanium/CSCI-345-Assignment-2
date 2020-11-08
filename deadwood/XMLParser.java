@@ -108,17 +108,20 @@ public class XMLParser {
 
    //Thannaree
    public ArrayList<SceneCard> readSceneData(Document d){
+
+      ArrayList info = new ArrayList<>();
    
       Element root = d.getDocumentElement();
       
       NodeList cards = root.getElementsByTagName("card");
       
       for (int i=0; i<cards.getLength();i++){
-            
          //System.out.println("Printing information for book "+(i+1));
          
          //reads data from the nodes
          Node card = cards.item(i);
+         info.add(SceneCard);
+         
          String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
          String image = card.getAttributes().getNamedItem("img").getNodeValue();
          String budget = card.getAttributes().getNamedItem("budget").getNodeValue();
