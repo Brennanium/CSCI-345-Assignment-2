@@ -113,49 +113,55 @@ public class XMLParser {
       
       for (int i=0; i<cards.getLength();i++){
             
-         System.out.println("Printing information for book "+(i+1));
+         //System.out.println("Printing information for book "+(i+1));
          
          //reads data from the nodes
-         Node set = cards.item(i);
-         String bookCategory = set.getAttributes().getNamedItem("category").getNodeValue();
-         System.out.println("Category = "+bookCategory);
+         Node card = cards.item(i);
+         String cardName = cards.getAttributes().getNamedItem("name").getNodeValue();
+         String image = cards.getAttributes().getNamedItem("img").getNodeValue();
+         String budget = cards.getAttributes().getNamedItem("budget").getNodeValue();
+         //System.out.println("Category = "+bookCategory);
          
          //reads data
                                     
-         NodeList children = set.getChildNodes();
+         NodeList children = card.getChildNodes();
          
          for (int j=0; j< children.getLength(); j++){
             
             Node sub = children.item(j);
             
-            if("title".equals(sub.getNodeName())){
-               String bookLanguage = sub.getAttributes().getNamedItem("lang").getNodeValue();
-               System.out.println("Language = "+bookLanguage);
-               String title = sub.getTextContent();
-               System.out.println("Title = "+title);
+            if("scene".equals(sub.getNodeName())){
+               String sceneNum = sub.getAttributes().getNamedItem("number").getNodeValue();
+               //System.out.println("Language = "+bookLanguage);
+               String sceneDescr = sub.getTextContent();
+               //System.out.println("Title = "+title);
                
             }
             
-            else if("author".equals(sub.getNodeName())){
-               String authorName = sub.getTextContent();
-               System.out.println(" Author = "+authorName);
+            else if("part".equals(sub.getNodeName())){
+               String partName = sub.getAttributes().getNamedItem("name").getNodeValue();
+               String partLevel = sub.getAttributes().getNamedItem("level").getNodeValue();
+               //System.out.println(" Author = "+authorName);
                
             }
-            else if("year".equals(sub.getNodeName())){
-               String yearVal = sub.getTextContent();
-               System.out.println(" Publication Year = "+yearVal);
+            else if("area".equals(sub.getNodeName())){
+               String areaCoordX = sub.getAttributes().getNamedItem("x").getNodeValue();
+               String areaCoordY = sub.getAttributes().getNamedItem("y").getNodeValue();
+               String areaCoordH = sub.getAttributes().getNamedItem("h").getNodeValue();
+               String areaCoordW = sub.getAttributes().getNamedItem("w").getNodeValue();
+               //System.out.println(" Publication Year = "+yearVal);
                
             }
-            else if("price".equals(sub.getNodeName())){
-               String priceVal = sub.getTextContent();
-               System.out.println(" Price = "+priceVal);
+            else if("line".equals(sub.getNodeName())){
+               String lineDescr = sub.getTextContent();
+               //System.out.println(" Price = "+priceVal);
                
             }
                         
          
          } //for childnodes
          
-         System.out.println("\n");
+         //System.out.println("\n");
             
       }//for book nodes
 
