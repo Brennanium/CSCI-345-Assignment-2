@@ -49,4 +49,14 @@ public class Set extends Area{
 
      return scene.getRoleForString(roleString);
    }
+
+   public boolean isRoleFree(Role role){
+    for(int i = 0; i < occupants.size(); i++){
+        if(occupants.get(i).getRole() == role){
+            return false;
+        }
+    }
+
+    return true;
+}
 }
