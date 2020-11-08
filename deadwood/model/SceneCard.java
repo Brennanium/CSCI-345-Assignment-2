@@ -2,23 +2,28 @@ package deadwood.model;
 
 public class SceneCard {
     private String sceneName;
-    private int difficulty;
     private int sceneBudget;
     private Role[] onCardRoles;
     private boolean isActive;
+    private int sceneNumber;
+    private String sceneDescr;
 
-    public SceneCard(String name, int diff, int budget){
+    public SceneCard(String name, int number, int budget, String descr){
         sceneName = name;
-        difficulty = diff;
+        sceneNumber = number;
         sceneBudget = budget;
+        sceneDescr = descr;
     }
 
     // getters
     public String getSceneName() {
         return sceneName;
     }
-    public int getDifficulty(){
-        return difficulty;
+    public int getsceneNumber(){
+        return sceneNumber;
+    }
+    public String getDescr(){
+        return sceneDescr;
     }
     public int getBudget() {
         return sceneBudget;
