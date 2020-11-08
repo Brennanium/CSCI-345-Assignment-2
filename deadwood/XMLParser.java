@@ -165,29 +165,25 @@ public class XMLParser {
    //Thannaree
    public ArrayList<SceneCard> readSceneData(Document d){
 
-      ArrayList<SceneCard> info = new ArrayList<SceneCard>();
+      ArrayList<SceneCard> sceneInfo = new ArrayList<SceneCard>();
       SceneCard scene;
+      ArrayList<Role> roleInfo = new ArrayList<Role>();
+      ArrayList<Area> areas = new ArrayList<Area>();
+      Area area;
 
       Element root = d.getDocumentElement();
       
       NodeList cards = root.getElementsByTagName("card");
       
       for (int i=0; i<cards.getLength();i++){
-         //System.out.println("Printing information for book "+(i+1));
-         
+       
          //reads data from the nodes
          Node card = cards.item(i);
          
          String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
          String image = card.getAttributes().getNamedItem("img").getNodeValue();
          int budget = Integer.parseInt(card.getAttributes().getNamedItem("budget").getNodeValue());
-         //System.out.println("Category = "+bookCategory);
-         
-         //initialize new SceneCard
-         scene = new SceneCard(cardName, 0, budget, ""); 
-         //add new scene to ArrayList
-         info.add(scene);
-
+  
          //reads data
                                     
          NodeList children = card.getChildNodes();
@@ -197,41 +193,39 @@ public class XMLParser {
             Node sub = children.item(j);
             
             if("scene".equals(sub.getNodeName())){
-               String sceneNum = sub.getAttributes().getNamedItem("number").getNodeValue();
-               //System.out.println("Language = "+bookLanguage);
+               int sceneNum = Integer.parseInt(sub.getAttributes().getNamedItem("number").getNodeValue());
                String sceneDescr = sub.getTextContent();
-               //System.out.println("Title = "+title);
-               
             }
             
             else if("part".equals(sub.getNodeName())){
                String partName = sub.getAttributes().getNamedItem("name").getNodeValue();
-               String partLevel = sub.getAttributes().getNamedItem("level").getNodeValue();
-               //System.out.println(" Author = "+authorName);
-               
+               int partLevel = Integer.parseInt(sub.getAttributes().getNamedItem("level").getNodeValue());
             }
             else if("area".equals(sub.getNodeName())){
-               String areaCoordX = sub.getAttributes().getNamedItem("x").getNodeValue();
-               String areaCoordY = sub.getAttributes().getNamedItem("y").getNodeValue();
-               String areaCoordH = sub.getAttributes().getNamedItem("h").getNodeValue();
-               String areaCoordW = sub.getAttributes().getNamedItem("w").getNodeValue();
-               //System.out.println(" Publication Year = "+yearVal);
-               
+               int areaCoordX = Integer.parseInt(sub.getAttributes().getNamedItem("x").getNodeValue());
+               int areaCoordY = Integer.parseInt(sub.getAttributes().getNamedItem("y").getNodeValue());
+               int areaCoordH = Integer.parseInt(sub.getAttributes().getNamedItem("h").getNodeValue());
+               int areaCoordW = Integer.parseInt(sub.getAttributes().getNamedItem("w").getNodeValue());  
             }
             else if("line".equals(sub.getNodeName())){
                String lineDescr = sub.getTextContent();
-               //System.out.println(" Price = "+priceVal);
-               
             }
-                        
-         
+
+            //initialize new SceneCard
+            scene = new SceneCard(cardName, sceneNum, budget, sceneDescr); 
+            //add new scene to ArrayList
+            sceneInfo.add(scene);
+
+            //add new role to ArrayList
+            roleInfo.add(new Role(partName, partLevel, "", false));
+
+            //add new coordinate to ArrayList
+            areas.add(new Area(areaCoordX, areaCoordY, areaCoordH, areaCoordW));
          } //for childnodes
          
-         //System.out.println("\n");
-            
       }//for book nodes
 
-      return new ArrayList<SceneCard>(0);
+      return scene;
    
    }// method
 
