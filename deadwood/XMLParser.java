@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import deadwood.model.areas.*;
 import deadwood.model.*;
+import deadwood.model.Role;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
@@ -54,50 +55,33 @@ public class XMLParser {
 
       NodeList parts;
       Node part;
-      ArrayList<Role> roles = new ArrayList<Role>();
-      Role role;
+      String roleName;
+      int rank;
+      String description;
+      ArrayList<Role> roles;
       
       for (int i=0; i<sets.getLength();i++){
-         
-         //reads data from the nodes
+
+         //set
          set = sets.item(i);
          areaName = set.getAttributes().getNamedItem("name").getNodeValue();
+         takes = set.getAttributes().getNamedItem("takes").getChildNodes().getLength();
          
-         //reads data
-                                    
+         //roles
          parts = set.getAttributes().getNamedItem("parts").getChildNodes();
+         roles = new ArrayList<Role>();
          for (int j=0; j< parts.getLength(); j++){
-            
             part = parts.item(j);
-            
-            if("title".equals(part.getNodeName())){
-               String bookLanguage = part.getAttributes().getNamedItem("lang").getNodeValue();
-               System.out.println("Language = "+bookLanguage);
-               String title = part.getTextContent();
-               System.out.println("Title = "+title);
-               
-            }
-            
-            else if("author".equals(part.getNodeName())){
-               String authorName = part.getTextContent();
-               System.out.println(" Author = "+authorName);
-               
-            }
-            else if("year".equals(part.getNodeName())){
-               String yearVal = part.getTextContent();
-               System.out.println(" Publication Year = "+yearVal);
-               
-            }
-            else if("price".equals(part.getNodeName())){
-               String priceVal = part.getTextContent();
-               System.out.println(" Price = "+priceVal);
-               
-            }
-                        
+
+            roleName = part.getAttributes().getNamedItem("name").getNodeValue();
+            rank = Integer.parseInt(part.getAttributes().getNamedItem("level").getNodeValue());
+            description = part.getAttributes().getNamedItem("line").getTextContent();
+
+            roles.add(new Role(roleName, rank, description, true));
+         }
          
-         } //for childnodes
          
-         System.out.println("\n");
+         
             
       }//for book nodes
 
