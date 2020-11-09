@@ -127,4 +127,14 @@ public class ActionManager {
         return (int) (Math.random() * (max - min + 1) + min);
     }
 
+    // for when use ask who
+    public void getNonPlayer(){
+
+    }
+
+    public void getCurrentArea(){
+
+    }
+
+    public 
 }
