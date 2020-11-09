@@ -10,16 +10,18 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 
+
+//singleton class
 class Board {
     private final String DEFAULT_XML_FILEPATH = "./CSCI-345-Assignment-2/deadwood/XML/";
 
-
+    public static Board instance = new Board();
+    
     private ArrayList<Area> areas;
     private ArrayList<SceneCard> undealtSceneCards;
     private ArrayList<SceneCard> dealtSceneCards;
 
-
-    public Board() {
+    private Board() {
         getAreasFromXML();
         getScenesFromXML();
         dealtSceneCards = new ArrayList<SceneCard>();
@@ -92,5 +94,9 @@ class Board {
 
     public String toString() {
         return "";
+    }
+
+    public static Board getInstance() {
+        return instance;
     }
 }

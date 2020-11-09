@@ -1,4 +1,4 @@
-package deadwood.model;
+package deadwood.model.events;
 
 import deadwood.model.areas.*;
 

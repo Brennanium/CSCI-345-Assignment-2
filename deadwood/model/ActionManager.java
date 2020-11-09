@@ -2,6 +2,7 @@ package deadwood.model;
 
 import deadwood.model.areas.*;
 import deadwood.model.areas.Set;
+import deadwood.model.events.*;
 
 import java.util.*;
 

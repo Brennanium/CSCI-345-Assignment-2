@@ -15,7 +15,11 @@ public class Game {
 
     public Game(ArrayList<Player> players) {
         this.players = players;
+
+        board = Board.getInstance();
     }
+
+    
 
     public boolean endDayCheck() {
         return true;
