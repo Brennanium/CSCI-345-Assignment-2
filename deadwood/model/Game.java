@@ -3,7 +3,6 @@
 package deadwood.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import deadwood.model.areas.*;
 
@@ -14,8 +13,8 @@ public class Game {
     private Board board;
     private int countDay;
 
-    public Game() {
-        
+    public Game(ArrayList<Player> players) {
+        this.players = players;
     }
 
     public boolean endDayCheck() {
@@ -30,6 +29,10 @@ public class Game {
         return currentPlayer;
     }
     
+    public int getNumOfPlayers() {
+        return players.size();
+    }
+
     private void checkStates() {
 
     }

@@ -3,19 +3,19 @@
 
 package deadwood;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import deadwood.model.*;
-import deadwood.model.areas;
+import deadwood.model.areas.*;
 
 public class TerminalController {
     private ActionManager model;
     
-    public TerminalController(ActionManager model) {
-        this.model = model;
-
+    public TerminalController() {
+        model = initModel();
         gameLoop();
     }
 
@@ -27,6 +27,9 @@ public class TerminalController {
         while(!userInput.equals("end") && sc.hasNext()){           
             dealWithUserInput(userInput);            
         }
+
+
+        sc.close();
     }
 
     private void dealWithUserInput(String input) {
@@ -50,8 +53,14 @@ public class TerminalController {
             model.takeRole("name");
         }
     }
-       
-    public static void main(String args[]){
+
+    private ActionManager initModel(){
+        //let user choose player names/colors
+        //make a list of players from that information
+        //pass it into a new ActionManager
+        
+        ArrayList<Player> players = new ArrayList<Player>();
+        return new ActionManager(players);
     }
 }
 

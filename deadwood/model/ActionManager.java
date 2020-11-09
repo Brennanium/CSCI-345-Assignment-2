@@ -8,8 +8,8 @@ import java.util.*;
 public class ActionManager {
     private Game game;
     
-    public ActionManager(){
-        game = new Game();
+    public ActionManager(ArrayList<Player> players){
+        game = new Game(players);
     }
     
     public boolean move(String areaString) {
@@ -135,6 +135,4 @@ public class ActionManager {
     public void getCurrentArea(){
 
     }
-
-    public 
 }
