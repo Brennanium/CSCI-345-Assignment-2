@@ -28,6 +28,9 @@ public class Player{
     public int getCredits() {
         return credits;
     }
+    public int getCurrentScore() {
+        return dollars + (credits * 5);
+    }
     public int getSuccessfulScenes() {
         return successfulScenes;
     }

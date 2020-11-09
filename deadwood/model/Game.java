@@ -2,73 +2,32 @@
 
 package deadwood.model;
 
-import deadwood.model.areas.*;
-import deadwood.XML.*;
-
 import java.util.ArrayList;
+import java.util.List;
 
-import org.w3c.dom.Document;
+import deadwood.model.areas.*;
+
 
 public class Game {
-    private final int DEFAULT_NUM_OF_PLAYERS = 2;
-    private final String DEFAULT_XML_FILEPATH = "[ default filepath ]";
-
-
+    private ArrayList<Player> players;
+    private Player currentPlayer;
     private Board board;
     private int countDay;
-
-    public Game(int numberOfPlayers) {
-        initFromXML();
-    }
 
     public Game() {
         
     }
 
-    private void initFromXML() {
-        Document doc1 = null;
-        Document doc2 = null;
-        XMLParser parsing = new XMLParser();
-        ArrayList<SceneCard> scenes;
-        ArrayList<Area> areas;  
-        
-        try {
-            doc1 = parsing.getDocFromFile("./CSCI-345-Assignment-2/deadwood/XML/cards.xml");
-            scenes = parsing.readSceneData(doc1);
-
-            doc2 = parsing.getDocFromFile("./CSCI-345-Assignment-2/deadwood/XML/board.xml");
-            areas = parsing.readAreaData(doc2);
-
-        }  catch(Exception e){
-            System.out.println("Error = " + e);
-        }
-    }
-
     public boolean endDayCheck() {
         return true;
     }
-    public void constructScenes() {
 
-    }
-    public void constructBoard() {
-
-    }
-    private int[] calcScore() {
-        return new int[0];
-    }    
-    public void setScene() {
-
-    }
     public Area getAreaForString(String areaString) {
-        return new Set();
-        
-        //board.getAreaForString(areaString);
+        return board.getAreaForString(areaString);
     }
+
     public Player getCurrentPlayer() {
-        return new Player();
-    }
-    public Player[] getPlayerAreas() {
-        return new Player[0];
+        return currentPlayer;
     }
     
     private void checkStates() {
@@ -80,6 +39,7 @@ public class Game {
     private void wrapGame() {
 
     }
+
 
     public int[] getCostForRank(int rank) {
         /* switch(rank) {

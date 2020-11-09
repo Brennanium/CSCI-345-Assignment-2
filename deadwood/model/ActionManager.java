@@ -8,8 +8,8 @@ import java.util.*;
 public class ActionManager {
     private Game game;
     
-    public ActionManager(int numOfPlayers){
-        game = new Game(numOfPlayers);
+    public ActionManager(){
+        game = new Game();
     }
     
     public boolean move(String areaString) {
