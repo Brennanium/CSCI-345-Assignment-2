@@ -65,9 +65,9 @@ public class TerminalController {
         int numPlayer = scan.nextInt();
         for(int i = 0; i <= numPlayer; i++){
             System.out.println("What is your name?");
-            String playerName = sc.nextLine();
+            String playerName = scan.nextLine();
             System.out.println("Choose one color");
-            String playerColor = sc.nextLine();
+            String playerColor = scan.nextLine();
             players.add(playerName, playerColor);
         }
         return new ActionManager(players);
