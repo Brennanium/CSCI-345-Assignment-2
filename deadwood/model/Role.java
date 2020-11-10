@@ -46,4 +46,10 @@ public class Role {
     public String getRoleName() {
       return roleName;
     }
+
+    public String toString() {
+        String str = String.format(
+            "%s %d %d %s", roleName, rank, level, description);
+        return str;
+    }
 }
