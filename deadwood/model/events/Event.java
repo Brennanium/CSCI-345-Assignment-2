@@ -1,8 +1,6 @@
 package deadwood.model.events;
 
-import deadwood.model.areas.*;
 
-
-public class Event {
-    
+public abstract class Event {
+    public abstract String toString();
 }

@@ -19,10 +19,29 @@ public class Game {
         board = Board.getInstance();
     }
 
-    
+
 
     public boolean endDayCheck() {
+        /* if() {
+            wrapDay();
+        } */
+        
         return true;
+
+    }
+    private void wrapDay() {
+
+    }
+
+    public boolean endGameCheck() {
+        /* if() {
+            wrapGame();
+        } */
+        
+        return true;
+    }
+    private void wrapGame() {
+
     }
 
     public Area getAreaForString(String areaString) {
@@ -35,16 +54,6 @@ public class Game {
     
     public int getNumOfPlayers() {
         return players.size();
-    }
-
-    private void checkStates() {
-
-    }
-    private void wrapDay() {
-
-    }
-    private void wrapGame() {
-
     }
 
 

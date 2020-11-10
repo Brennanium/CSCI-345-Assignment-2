@@ -13,7 +13,7 @@ public class ActionManager {
         game = new Game(players);
     }
     
-    public boolean move(String areaString) {
+    public boolean move(String areaString) /* throws InvalidActionException */ {
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
 
@@ -27,7 +27,7 @@ public class ActionManager {
 
         return true;
     }
-    public boolean takeRole(String roleString) {
+    public boolean takeRole(String roleString) /* throws InvalidActionException */ {
         Player currentPlayer = game.getCurrentPlayer();
 
         if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
@@ -48,7 +48,7 @@ public class ActionManager {
             return true;
         }
     }
-    public boolean act() {
+    public boolean act() /* throws InvalidActionException */ {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
         else {
@@ -77,7 +77,7 @@ public class ActionManager {
         }
     }
 
-    public boolean rehearse() {
+    public boolean rehearse() /* throws InvalidActionException */ {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
         else {
@@ -94,7 +94,7 @@ public class ActionManager {
             return true;
         }
     }
-    public boolean upgrade(int desiredRank) {
+    public boolean upgrade(int desiredRank) /* throws InvalidActionException */ {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof CastingOffice)) return false;
         else {

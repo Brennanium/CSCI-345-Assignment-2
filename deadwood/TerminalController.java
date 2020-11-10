@@ -41,17 +41,23 @@ public class TerminalController {
             model.getCurrentArea();
         } else if(input.equals("act")){
             model.act();
-        } else if(input.matches("move(.*)")){
+        } else if(input.matches("move(.+)")){
             String place = input;
             String command = place.substring(0,5);
             String name = place.substring(6, place.length()-1);
-            model.move("name");
-        } else if(input.matches("work(.*)")){
+           /*  try { */
+                model.move("name");
+            /* } catch(InvalidActionException e) {
+                System.out.println("Invalid Action: " + e.getReason());
+            } */
+        } else if(input.matches("work(.+)")){
             String place = input;
             String command = place.substring(0,5);
             String name = place.substring(6, place.length()-1);
             model.takeRole("name");
-        }
+        } /* else {
+            System.out.println("Invalid invalid command");
+        } */
     }
 
     private ActionManager initModel(){

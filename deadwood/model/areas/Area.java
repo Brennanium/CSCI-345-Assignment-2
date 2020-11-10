@@ -63,4 +63,9 @@ public abstract class Area {
         occupants.remove(p);
     }
 
+
+    public String toString(){
+        return areaName;
+    }
+
 }
