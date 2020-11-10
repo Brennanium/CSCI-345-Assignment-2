@@ -12,7 +12,16 @@ public class Player{
     private int successfulScenes;
     private Area currentArea;
     private int practiceChips;
+    private String color;
 
+    public Player(String pName, String pColor){
+        name = pName;
+        color = pColor;
+    }
+
+    public String getColor(){
+        return color;
+    }
     public String getName() {
         return name;
     }

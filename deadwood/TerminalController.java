@@ -25,7 +25,8 @@ public class TerminalController {
         if(sc.hasNext())
             userInput = sc.nextLine();
         while(!userInput.equals("end") && sc.hasNext()){           
-            dealWithUserInput(userInput);            
+            dealWithUserInput(userInput);    
+            userInput = sc.nextLine();        
         }
 
 
@@ -60,12 +61,21 @@ public class TerminalController {
         } */
     }
 
-    private ActionManager initModel(){
-        //let user choose player names/colors
-        //make a list of players from that information
-        //pass it into a new ActionManager
-        
+    //let user choose player names/colors
+    //make a list of players from that information
+    //pass it into a new ActionManager
+    private ActionManager initModel(){        
         ArrayList<Player> players = new ArrayList<Player>();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("How many player?");
+        int numPlayer = scan.nextInt();
+        for(int i = 0; i <= numPlayer; i++){
+            System.out.println("What is your name?");
+            String playerName = scan.nextLine();
+            System.out.println("Choose one color");
+            String playerColor = scan.nextLine();
+            players.add(playerName, playerColor);
+        }
         return new ActionManager(players);
     }
 }
