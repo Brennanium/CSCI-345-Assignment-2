@@ -25,7 +25,8 @@ public class TerminalController {
         if(sc.hasNext())
             userInput = sc.nextLine();
         while(!userInput.equals("end") && sc.hasNext()){           
-            dealWithUserInput(userInput);            
+            dealWithUserInput(userInput);    
+            userInput = sc.nextLine();        
         }
 
 
@@ -54,10 +55,11 @@ public class TerminalController {
         }
     }
 
+    //let user choose player names/colors
+    //make a list of players from that information
+    //pass it into a new ActionManager
     private ActionManager initModel(){
-        //let user choose player names/colors
-        //make a list of players from that information
-        //pass it into a new ActionManager
+
         
         ArrayList<Player> players = new ArrayList<Player>();
         return new ActionManager(players);
