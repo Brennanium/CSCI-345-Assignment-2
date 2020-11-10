@@ -46,7 +46,7 @@ public abstract class Area {
     }
     
     public boolean isCastingOffice(){
-        return areaName.equals("Casting Office");
+        return areaName.equalsIgnoreCase("Casting Office");
     }
     public void addPlayer(Player p) {
         occupants.add(p);

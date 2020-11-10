@@ -40,15 +40,20 @@ public class Set extends Area{
         this.scene = scene;
     }
    
-   public Role getRoleForString(String roleString) { 
+    public Role getRoleForString(String roleString) { 
      for(int i = 0; i < offCardRoles.length; i++){
-        if(offCardRoles[i].getRoleName().equals(roleString)){
+        if(offCardRoles[i].getRoleName().equalsIgnoreCase(roleString)){
               return offCardRoles[i];
         }
      }
 
      return scene.getRoleForString(roleString);
    }
+
+    //to do
+    public ArrayList<Role> getRoles() { 
+        return new ArrayList<Role>();
+    }
 
    public boolean isRoleFree(Role role){
     for(int i = 0; i < occupants.size(); i++){
@@ -58,5 +63,14 @@ public class Set extends Area{
     }
 
     return true;
+}
+
+public String getSceneInfo(){ 
+    /* if(sceneCardFlip == true){
+        //display current player, no scene, no active scene, num player = ..
+    } else {
+        // scene name, budget, shot token left, other player in the same scene
+    } */
+    return "";
 }
 }

@@ -16,7 +16,10 @@ public class Role {
         this.onCard = onCard;
     }
 
-    public boolean checkOnCard(){
+    public Role() {
+	}
+
+	public boolean checkOnCard(){
          return onCard;
     }
 

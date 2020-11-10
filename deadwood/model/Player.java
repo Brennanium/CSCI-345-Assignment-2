@@ -14,11 +14,13 @@ public class Player{
     private int practiceChips;
     private String color;
 
-    public Player(String pName, String pColor){
+    /* public Player(String pName, String pColor){
         name = pName;
         color = pColor;
+    } */
+    public Player(String pName){
+        this.name = pName;
     }
-
     public String getColor(){
         return color;
     }
@@ -98,6 +100,8 @@ public class Player{
     }
 
     public String toString() {
-        return "";
+        String str = String.format(
+            "%s %d", name, pRank);
+        return str;
     }
 }

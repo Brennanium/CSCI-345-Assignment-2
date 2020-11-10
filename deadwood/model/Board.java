@@ -65,7 +65,7 @@ class Board {
     }
     public Area getAreaForString(String areaString) {
         return areas.stream()
-            .filter(a -> a.getName().equals(areaString))
+            .filter(a -> a.getName().equalsIgnoreCase(areaString))
             .findAny()
             .orElse(null);
     }
@@ -88,7 +88,7 @@ class Board {
     private boolean isDuplicateArea(Area area){
         return areas.contains(area) || 
             areas.stream()
-                .anyMatch(a -> a.getName().equals(area.getName()));
+                .anyMatch(a -> a.getName().equalsIgnoreCase(area.getName()));
     }
 
 

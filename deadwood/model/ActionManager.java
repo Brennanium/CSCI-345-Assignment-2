@@ -13,7 +13,7 @@ public class ActionManager {
         game = new Game(players);
     }
     
-    public boolean move(String areaString) /* throws InvalidActionException */ {
+    public MoveEvent move(String areaString) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
 
@@ -25,12 +25,12 @@ public class ActionManager {
             newArea.addPlayer(currentPlayer);
         }
 
-        return true;
+        return null;
     }
-    public boolean takeRole(String roleString) /* throws InvalidActionException */ {
+    public TakeRoleEvent takeRole(String roleString) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
 
-        if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
+        if(!(currentPlayer.getCurrentArea() instanceof Set)) return null;
         else {
             Set currentArea = (Set)currentPlayer.getCurrentArea();
             
@@ -45,10 +45,10 @@ public class ActionManager {
                 }
             }
 
-            return true;
+            return null;
         }
     }
-    public boolean act() /* throws InvalidActionException */ {
+    public boolean act() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
         else {
@@ -77,7 +77,7 @@ public class ActionManager {
         }
     }
 
-    public boolean rehearse() /* throws InvalidActionException */ {
+    public boolean rehearse() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
         else {
@@ -118,8 +118,19 @@ public class ActionManager {
     
     }
     
-    public Event[] end() {
-        return new Event[0];
+    public ArrayList<Event> end() {
+        ArrayList<Event> events = new ArrayList<Event>();
+        EndSceneEvent sceneEnd = game.endSceneCheck();
+        if(sceneEnd == null) 
+            events.add(sceneEnd);
+        EndDayEvent dayEnd = game.endDayCheck();
+        if(dayEnd == null) 
+            events.add(dayEnd);
+        EndGameEvent gameEnd = game.endGameCheck();
+        if(gameEnd == null) 
+            events.add(gameEnd);
+
+        return events;
     }
 
     private int rollDie() {
@@ -136,4 +147,23 @@ public class ActionManager {
     public void getCurrentArea(){
 
     }
+
+	public void getPlayerAreas() {
+
+	}
+
+	public void getRoles() {
+	}
+
+	public void getLevels() {
+	}
+
+	public void getScene() {
+	}
+
+	public void getPlayers() {
+	}
+
+	public void getCurrentRole() {
+	}
 }

@@ -5,6 +5,7 @@ package deadwood.model;
 import java.util.ArrayList;
 
 import deadwood.model.areas.*;
+import deadwood.model.events.*;
 
 
 public class Game {
@@ -19,26 +20,33 @@ public class Game {
         board = Board.getInstance();
     }
 
-
-
-    public boolean endDayCheck() {
+    public EndSceneEvent endSceneCheck() {
         /* if() {
             wrapDay();
         } */
         
-        return true;
+        return null;/* new EndSceneEvent(players, currentPlayer.getCurrentArea(), new SceneCard()); */
+
+    }
+
+    public EndDayEvent endDayCheck() {
+        /* if() {
+            wrapDay();
+        } */
+        
+        return null;/* new EndDayEvent(currentPlayer, currentPlayer.getCurrentArea(), new Role()); */
 
     }
     private void wrapDay() {
 
     }
 
-    public boolean endGameCheck() {
+    public EndGameEvent endGameCheck() {
         /* if() {
             wrapGame();
         } */
         
-        return true;
+        return null;
     }
     private void wrapGame() {
 

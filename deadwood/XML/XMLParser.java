@@ -110,7 +110,7 @@ public class XMLParser {
          set = (Element)sets.item(i);
          String name = set.getAttributes().getNamedItem("name").getNodeValue();
          area = areas.stream()
-            .filter(a -> a.getName().equals(name))
+            .filter(a -> a.getName().equalsIgnoreCase(name))
             .findAny()
             .orElse(null);
          if(area == null) continue;
