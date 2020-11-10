@@ -58,10 +58,18 @@ public class TerminalController {
     //let user choose player names/colors
     //make a list of players from that information
     //pass it into a new ActionManager
-    private ActionManager initModel(){
-
-        
+    private ActionManager initModel(){        
         ArrayList<Player> players = new ArrayList<Player>();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("How many player?");
+        int numPlayer = scan.nextInt();
+        for(int i = 0; i <= numPlayer; i++){
+            System.out.println("What is your name?");
+            String playerName = sc.nextLine();
+            System.out.println("Choose one color");
+            String playerColor = sc.nextLine();
+            players.add(playerName, playerColor);
+        }
         return new ActionManager(players);
     }
 }
