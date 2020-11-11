@@ -13,6 +13,7 @@ public class Player{
     private Area currentArea;
     private int practiceChips;
     private String color;
+    private int shotToken;
 
     /* public Player(String pName, String pColor){
         name = pName;
@@ -38,6 +39,9 @@ public class Player{
     }
     public int getCredits() {
         return credits;
+    }
+    public int getShotToken(){
+        return shotToken;
     }
     public int getCurrentScore() {
         return dollars + (credits * 5);
@@ -101,7 +105,8 @@ public class Player{
 
     public String toString() {
         String str = String.format(
-            "%s %d", name, pRank);
+            "%s %d %d %d %d %d %s %s", name, pRank, credits, dollars, 
+                                       practiceChips, successfulScenes, role, currentArea);
         return str;
     }
 }

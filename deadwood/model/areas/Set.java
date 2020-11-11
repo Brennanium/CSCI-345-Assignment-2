@@ -9,6 +9,8 @@ public class Set extends Area{
     private Role[] offCardRoles;
     private int shotTokenCount;
     private SceneCard scene;
+    private Game game;
+    private Player player;
 
     public Set(String name, int shotTokenCount, Role[] roles) {
         super(name);
@@ -76,6 +78,14 @@ public String getSceneInfo(){
     } else {
         // scene name, budget, shot token left, other player in the same scene
     } */
-    return "";
+    String str = String.format
+        ("%s %d %d", scene.getSceneName(), scene.getBudget(), player.getShotToken());
+
+    if(scene.getIsActive() == true){
+        String strn = String.format
+            ("%s %d", game.getCurrentPlayer(), game.getNumOfPlayers());
+        return strn;
+    }
+    return str;
 }
 }
