@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 //import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class XMLParser {
@@ -56,6 +57,7 @@ public class XMLParser {
       String areaName;
       int takes;
 
+      Element partsNode;
       NodeList parts;
       Node part;
       String roleName;
@@ -71,7 +73,8 @@ public class XMLParser {
          takes = set.getElementsByTagName("take").getLength();
          
          //roles
-         parts = set.getElementsByTagName("part");
+         partsNode = (Element)set.getElementsByTagName("parts").item(0);
+         parts = partsNode.getElementsByTagName("part");
          roles = new ArrayList<Role>();
          for (int j=0; j< parts.getLength(); j++){
             part = parts.item(j);
@@ -98,8 +101,29 @@ public class XMLParser {
       
       //casting office
       if(office != null){
-         areas.add(new CastingOffice());
          //setup upgrade
+         HashMap<Integer, Integer> moneyForRank = new HashMap<Integer, Integer>();
+         HashMap<Integer, Integer> creditsForRank = new HashMap<Integer, Integer>();
+         
+         Element upgradesNode = (Element)office.getElementsByTagName("upgrades").item(0);
+         NodeList upgrades = upgradesNode.getElementsByTagName("upgrade");
+         Node upgrade;
+         int level;
+         String currency = "";
+         int amount;
+         for(int i = 0; i < upgrades.getLength(); i++){
+            upgrade = upgrades.item(i);
+            level = Integer.parseInt(upgrade.getAttributes().getNamedItem("level").getNodeValue());
+            currency = upgrade.getAttributes().getNamedItem("currency").getNodeValue();
+            amount = Integer.parseInt(upgrade.getAttributes().getNamedItem("amt").getNodeValue());
+            if("dollar".equals(currency)) {
+               moneyForRank.put(level, amount);
+            } else if("credit".equals(currency)) {
+               creditsForRank.put(level, amount);
+            }
+         }
+
+         areas.add(new CastingOffice(moneyForRank,creditsForRank));
       }
 
       //add neighbors to sets

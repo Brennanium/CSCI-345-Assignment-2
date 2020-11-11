@@ -1,6 +1,7 @@
 package deadwood.model.areas;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import deadwood.model.*;
 
@@ -51,8 +52,12 @@ public class Set extends Area{
    }
 
     //to do
-    public ArrayList<Role> getRoles() { 
-        return new ArrayList<Role>();
+    public ArrayList<Role> getRoles() {
+        ArrayList<Role> list = new ArrayList<Role>();
+        Collections.addAll(list, offCardRoles);
+        if(scene != null) 
+            Collections.addAll(list, scene.getOnCardRoles());
+        return list;
     }
 
    public boolean isRoleFree(Role role){

@@ -94,22 +94,25 @@ public class ActionManager {
             return true;
         }
     }
-    public boolean upgrade(int desiredRank) /* throws InvalidActionException */ {
+    public BuyEvent upgrade(int desiredRank) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
-        if(!(currentPlayer.getCurrentArea() instanceof CastingOffice)) return false;
+        if(!(currentPlayer.getCurrentArea() instanceof CastingOffice)) 
+            throw new InvalidActionException(
+                String.format("Player %s not in Casting Office.", currentPlayer.getName()));
         else {
             CastingOffice currentArea = (CastingOffice)currentPlayer.getCurrentArea();
-            int[] desiredRankCost = game.getCostForRank(desiredRank);
-            
-            if(currentPlayer.getRank() < desiredRank){
-                if(currentPlayer.canAfford(desiredRankCost[0],desiredRankCost[1])){
-                    currentPlayer.buy(desiredRankCost[0],desiredRankCost[1]);
-                    currentPlayer.setRank(desiredRank);
-                }
+            if(currentArea.playerCanAffordRank(currentPlayer,desiredRank)){
+                int money = currentArea.getMoneyForRank(desiredRank);
+                int credits = currentArea.getCreditsForRank(desiredRank);
+                
+                currentPlayer.buy(money,credits);
+                currentPlayer.setRank(desiredRank);  
+                
+                return BuyEvent(currentPlayer, money, credits);
+            } else {
+                throw new InvalidActionException(
+                    String.format("Player %s cannot affort rank %d.", currentPlayer.getName(), desiredRank));
             }
-
-
-            return true;
         }
     }
 
