@@ -13,7 +13,6 @@ public class Player{
     private Area currentArea;
     private int practiceChips;
     private String color;
-    private int shotToken;
 
     /* public Player(String pName, String pColor){
         name = pName;
@@ -22,54 +21,64 @@ public class Player{
     public Player(String pName){
         this.name = pName;
     }
+
     public String getColor(){
         return color;
     }
+
     public String getName() {
         return name;
     }
+
     public int getRank() {
         return pRank;
     }
+
     public Role getRole(){
         return role;
     }
+
     public int getDollars() {
         return dollars;
     }
+
     public int getCredits() {
         return credits;
     }
-    public int getShotToken(){
-        return shotToken;
-    }
+
     public int getCurrentScore() {
         return dollars + (credits * 5);
     }
+
     public int getSuccessfulScenes() {
         return successfulScenes;
     }
+
     public Area getCurrentArea() {
         return currentArea;
     }
+
     public int getPracticeChips() {
         return practiceChips;
     }
-    
 
     public void setRank(int newRank){
         pRank = newRank;
     }
+
     public void setRole(Role roleName){
         this.role = roleName;
     }
+
     public void addPracticeChip(){
          this.practiceChips++;    
     }
+
     // convenience method
     public void rehearse(){
         addPracticeChip();    
     }
+
     public void resetPracticeChips(){
          this.practiceChips = 0;  
     }
@@ -86,6 +95,7 @@ public class Player{
     public void wrapScene() {
         successfulScenes++;
     }
+
     public boolean canAfford(int dollars, int credits) {
         return this.dollars >= dollars && this.credits >= credits;
     }
@@ -104,9 +114,19 @@ public class Player{
     }
 
     public String toString() {
-        String str = String.format(
-            "%s %d %d %d %d %d %s %s", name, pRank, credits, dollars, 
-                                       practiceChips, successfulScenes, role, currentArea);
+        String str = "";
+        if(role != null){
+            str = String.format(
+                "Player: %s %nRank: %d %nCredits: %d %nDollars: %d %n" +  
+                "Number of Practice Chips: %d %nNumber of Successful Scenes: %d %n" +
+                "Role: %s %nCurrent Area: %s %n", 
+                name, pRank, credits, dollars, practiceChips, successfulScenes, role, currentArea);
+        } else {
+            str = String.format(
+                "Player: %s %nRank: %d %nCredits: %d %nDollars: %d %n" +  
+                "Number of Successful Scenes: %d %nCurrent Area: %s %n", 
+                name, pRank, credits, dollars, successfulScenes, currentArea);
+        }
         return str;
     }
 }

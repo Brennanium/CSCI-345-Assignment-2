@@ -2,7 +2,8 @@
 
 package deadwood.model;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.*;
 
 import deadwood.model.areas.*;
 import deadwood.model.events.*;
@@ -10,6 +11,7 @@ import deadwood.model.events.*;
 
 public class Game {
     private ArrayList<Player> players;
+    private ArrayList<Player> playersInTurnOrder;
     private Player currentPlayer;
     private Board board;
     private int countDay;
@@ -17,7 +19,30 @@ public class Game {
     public Game(ArrayList<Player> players) {
         this.players = players;
 
+        List<Player> playersCopy = players.stream()
+            .map(p -> p)
+            .collect(Collectors.toList());
+        playersInTurnOrder = new ArrayList<Player>(playersCopy);
+        Collections.shuffle(playersInTurnOrder);
+
         board = Board.getInstance();
+
+        setNextPlayer();
+
+        players.stream()
+            .forEach(p -> p.setArea(getAreaForString("trailer")));
+
+    }
+
+    public void setNextPlayer() {
+        if(currentPlayer == null) {
+            currentPlayer = playersInTurnOrder.get(0);
+            return;
+        } 
+        int currentIndex = playersInTurnOrder.indexOf(currentPlayer);
+        int nextIndex = (currentIndex + 1) % players.size();
+
+        currentPlayer = playersInTurnOrder.get(nextIndex);
     }
 
     public EndSceneEvent endSceneCheck() {
@@ -37,6 +62,7 @@ public class Game {
         return null;/* new EndDayEvent(currentPlayer, currentPlayer.getCurrentArea(), new Role()); */
 
     }
+
     private void wrapDay() {
 
     }
@@ -48,6 +74,7 @@ public class Game {
         
         return null;
     }
+
     private void wrapGame() {
 
     }
@@ -64,6 +91,16 @@ public class Game {
         return players.size();
     }
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public ArrayList<Area> getPlayerAreas() {
+        List<Area> playerAreas = players.stream()
+            .map(p -> p.getCurrentArea())
+            .collect(Collectors.toList());
+        return new ArrayList<Area>(playerAreas);
+    }
 
     public int[] getCostForRank(int rank) {
         /* switch(rank) {

@@ -25,21 +25,27 @@ public class SceneCard {
     public String getSceneName() {
         return sceneName;
     }
+
     public int getsceneNumber(){
         return sceneNumber;
     }
+
     public String getDescr(){
         return sceneDescr;
     }
+
     public int getBudget() {
         return sceneBudget;
     }
+
     public String getImageString(){
         return image;
     }
+
     public boolean getIsActive() {
         return isActive;
     }
+
     public Role[] getOnCardRoles(){
       return onCardRoles;
     }
@@ -55,6 +61,6 @@ public class SceneCard {
     }
 
     public String toString(){
-        return sceneName;
+        return sceneName + " scene " + sceneNumber;
     }
 }

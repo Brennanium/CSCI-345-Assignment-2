@@ -9,8 +9,6 @@ public class Set extends Area{
     private Role[] offCardRoles;
     private int shotTokenCount;
     private SceneCard scene;
-    private Game game;
-    private Player player;
 
     public Set(String name, int shotTokenCount, Role[] roles) {
         super(name);
@@ -23,10 +21,10 @@ public class Set extends Area{
         super();
     }
 
-
     public int getShotTokenCount() {
         return shotTokenCount;
     }
+
     public Role[] getOffCardRoles(){
         return offCardRoles;
     }
@@ -63,29 +61,60 @@ public class Set extends Area{
     }
 
    public boolean isRoleFree(Role role){
-    for(int i = 0; i < occupants.size(); i++){
-        if(occupants.get(i).getRole() == role){
-            return false;
+        for(int i = 0; i < occupants.size(); i++){
+            if(occupants.get(i).getRole() == role){
+                return false;
+            }
         }
+
+        return true;
     }
 
-    return true;
-}
-
-public String getSceneInfo(){ 
-    /* if(sceneCardFlip == true){
-        //display current player, no scene, no active scene, num player = ..
-    } else {
-        // scene name, budget, shot token left, other player in the same scene
-    } */
-    String str = String.format
-        ("%s %d %d", scene.getSceneName(), scene.getBudget(), player.getShotToken());
-
-    if(scene.getIsActive() == true){
-        String strn = String.format
-            ("%s %d", game.getCurrentPlayer(), game.getNumOfPlayers());
-        return strn;
+    public String getAreaSummary() {
+        String str = "";
+        if(scene != null){
+            str = String.format(
+                "in %s shooting %s.", getName(), scene.toString());
+        } else {
+            str = String.format(
+                "in %s not shooting anything at the moment.", getName());
+        }
+        return str;
     }
-    return str;
-}
+    
+    public String getRolesInfo(){
+        String str = "";
+        if(scene != null && scene.getIsActive() == true){
+            str = "On card roles: \n";
+            for(Role r : scene.getOnCardRoles()) {
+                str += r + " " + (isRoleFree(r) ? "\n" : "TAKEN\n");
+            }
+            str += "Off card roles: \n";
+            for(Role r : offCardRoles) {
+                str += r + " " + (isRoleFree(r) ? "\n" : "TAKEN\n");
+            }
+        } else {
+            str = String.format
+                ("There is no active scene card in %s.", getName());
+        }
+        return str;
+    }
+
+    public String getSceneInfo(){ 
+        //make a sentence or list 
+        String str =  "";
+        if(scene != null && scene.getIsActive() == true){
+            str = String.format
+                ("Area Name: %s %n Scene Name: %s %n Scene Budget: %d %n %d %n", 
+                getName(), //area name
+                scene.getSceneName(), 
+                scene.getBudget(), 
+                shotTokenCount);
+            str += getRolesInfo();
+        } else {
+            str= String.format
+                ("There is no active scene card in %s.", getName());
+        }
+        return str;
+    }
 }

@@ -13,6 +13,7 @@ public class ActionManager {
         game = new Game(players);
     }
     
+    //do stuffs
     public MoveEvent move(String areaString) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
@@ -27,6 +28,7 @@ public class ActionManager {
 
         return null;
     }
+
     public TakeRoleEvent takeRole(String roleString) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
 
@@ -48,6 +50,7 @@ public class ActionManager {
             return null;
         }
     }
+
     public boolean act() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set)) return false;
@@ -94,7 +97,8 @@ public class ActionManager {
             return true;
         }
     }
-    public BuyEvent upgrade(int desiredRank) throws InvalidActionException {
+
+    public UpgradeEvent upgrade(int desiredRank) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof CastingOffice)) 
             throw new InvalidActionException(
@@ -105,20 +109,16 @@ public class ActionManager {
                 int money = currentArea.getMoneyForRank(desiredRank);
                 int credits = currentArea.getCreditsForRank(desiredRank);
                 
+                int oldRank = currentPlayer.getRank();
                 currentPlayer.buy(money,credits);
                 currentPlayer.setRank(desiredRank);  
                 
-                return BuyEvent(currentPlayer, money, credits);
+                return new UpgradeEvent(currentPlayer, oldRank, desiredRank);
             } else {
                 throw new InvalidActionException(
                     String.format("Player %s cannot affort rank %d.", currentPlayer.getName(), desiredRank));
             }
         }
-    }
-
-
-	public void getCurrentPlayer() {
-    
     }
     
     public ArrayList<Event> end() {
@@ -133,6 +133,7 @@ public class ActionManager {
         if(gameEnd == null) 
             events.add(gameEnd);
 
+        game.setNextPlayer();  
         return events;
     }
 
@@ -142,31 +143,57 @@ public class ActionManager {
         return (int) (Math.random() * (max - min + 1) + min);
     }
 
-    // for when use ask who
-    public void getNonPlayer(){
-
+    //get stuffs
+	public Player getCurrentPlayer() {
+        return game.getCurrentPlayer();
     }
 
-    public void getCurrentArea(){
-
+    public Area getCurrentArea(){
+        return game.getCurrentPlayer().getCurrentArea();
     }
 
-	public void getPlayerAreas() {
-
+	public ArrayList<Area> getPlayerAreas() {
+        return game.getPlayerAreas();
 	}
 
-	public void getRoles() {
+	public ArrayList<Role> getRoles() throws InvalidActionException{
+        Player currentPlayer = game.getCurrentPlayer();
+        Area currentArea = currentPlayer.getCurrentArea();
+        if(currentArea instanceof Set) {
+           return ((Set)currentArea).getRoles();
+        }  else {
+            throw new InvalidActionException(
+                String.format("Player %s not on a Set.", currentPlayer.getName()));
+        }        
 	}
 
-	public void getLevels() {
+	public ArrayList<String> getRanks() throws InvalidActionException {
+        Player currentPlayer = game.getCurrentPlayer();
+        Area currentArea = currentPlayer.getCurrentArea();
+        if(currentArea instanceof CastingOffice) {
+            return ((CastingOffice)currentArea).getRankUpgradeStrings();
+        } else {
+            throw new InvalidActionException(
+                String.format("Player %s not in Casting Office.", currentPlayer.getName()));
+        }
 	}
 
-	public void getScene() {
+	public String getScene() throws InvalidActionException {
+        Player currentPlayer = game.getCurrentPlayer();
+        Area currentArea = currentPlayer.getCurrentArea();
+        if(currentArea instanceof Set) {
+           return ((Set)currentArea).getSceneInfo();
+        }  else {
+            throw new InvalidActionException(
+                String.format("Player %s not on a Set.", currentPlayer.getName()));
+        }       
 	}
 
-	public void getPlayers() {
+	public ArrayList<Player> getPlayers() {
+        return game.getPlayers();
 	}
 
-	public void getCurrentRole() {
+	public Role getCurrentRole() {
+        return game.getCurrentPlayer().getRole();
 	}
 }

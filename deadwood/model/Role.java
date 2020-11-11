@@ -5,7 +5,6 @@ package deadwood.model;
 public class Role {
     private int rank;
     private String roleName;
-    private int level;
     private boolean onCard;
     private String description;
 
@@ -27,10 +26,6 @@ public class Role {
         return description;
     }
     
-    public int getLevel(){
-        return level;
-    }
-    
     public boolean checkRank(Player pRank){
         if(pRank.getRank() >= rank){
             return true;       
@@ -48,8 +43,9 @@ public class Role {
     }
 
     public String toString() {
+        //make a sentence or list
         String str = String.format(
-            "%s %d %d %s", roleName, rank, level, description);
+            "Role Name: %s %n Rank: %d %n Description: \"%s\" %n", roleName, rank, description);
         return str;
     }
 }

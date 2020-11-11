@@ -8,4 +8,8 @@ public class Trailers extends Area {
     public Trailers() {
         super("trailer");
     }
+
+    public String getAreaSummary() {
+        return "in Trailers";
+    }
 }

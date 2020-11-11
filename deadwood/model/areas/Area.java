@@ -48,6 +48,7 @@ public abstract class Area {
     public boolean isCastingOffice(){
         return areaName.equalsIgnoreCase("Casting Office");
     }
+
     public void addPlayer(Player p) {
         occupants.add(p);
     }
@@ -59,10 +60,12 @@ public abstract class Area {
     public ArrayList<Area> getNeighbors(){
         return neighbors;
     }
+
     public void removePlayer(Player p) {
         occupants.remove(p);
     }
 
+    public abstract String getAreaSummary();
 
     public String toString(){
         return areaName;

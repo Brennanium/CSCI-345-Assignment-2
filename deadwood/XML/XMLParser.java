@@ -48,7 +48,6 @@ public class XMLParser {
       Element root = d.getDocumentElement();
       
       NodeList sets = root.getElementsByTagName("set");
-      System.out.println(sets.getLength());
       Element set;
       Element trailer = (Element)root.getElementsByTagName("trailer").item(0);
       Element office = (Element)root.getElementsByTagName("office").item(0);

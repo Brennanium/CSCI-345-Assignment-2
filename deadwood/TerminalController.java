@@ -13,26 +13,33 @@ import deadwood.model.areas.*;
 public class TerminalController {
     private ActionManager model;
     private Integer numOfPlayers = null;
+    Scanner sc;
     
     public TerminalController(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
+
+        sc = new Scanner(System.in);
+
         model = initModel();
         gameLoop();
     }
 
     public TerminalController() {
+        sc = new Scanner(System.in);
+
         model = initModel();
         gameLoop();
     }
 
     private void gameLoop(){
+        System.out.println("The game has started!");
+        System.out.println(model.getCurrentPlayer().getName() + 
+            " has the first turn.");  
         String userInput = "";
-        Scanner sc = new Scanner(System.in);
-        if(sc.hasNext())
-            userInput = sc.nextLine();
+        
         while(!userInput.equalsIgnoreCase("quit") && sc.hasNext()) {
-            dealWithUserInput(userInput);    
             userInput = sc.nextLine();        
+            dealWithUserInput(userInput);    
         }
 
 
@@ -41,36 +48,48 @@ public class TerminalController {
 
     private void dealWithUserInput(String input) {
         input = input.toLowerCase();
-        
-        /*  list roles, 
-            list level, 
-            scene: shot counter have left
 
-            (list players) do later
-            */
         try {
             if(input.equals("Active player?")){
-                model.getCurrentPlayer();
+                System.out.println(
+                    model.getCurrentPlayer()
+                );
             } else if(input.equals("who")){
-                model.getNonPlayer();
+                System.out.println(
+                    model.getCurrentPlayer()
+                );
             } else if(input.equals("where everyone")){
-                model.getPlayerAreas();
+                model.getPlayerAreas().stream()
+                    .forEach(a -> System.out.println(a));
             } else if(input.equals("where")){
-                model.getCurrentArea();
+                System.out.println(
+                    model.getCurrentArea()
+                );
             } else if(input.equals("act")){
-                model.act();
+                //System.out.println(
+                    model.act();
+                //);
             } else if(input.equals("role")){
-                model.getCurrentRole();
+                System.out.println(
+                    model.getCurrentRole()
+                );
             } else if(input.equals("rehearse")){
-                model.rehearse();
+                System.out.println(
+                    model.rehearse()
+                );
             } else if(input.equals("list roles")){ 
-                model.getRoles();
-            } else if(input.equals("list levels")){
-                model.getLevels();
+                model.getRoles().stream()
+                    .forEach(r -> System.out.println(r));
+            } else if(input.equals("list ranks")){
+                model.getRanks().stream()
+                    .forEach(s -> System.out.println(s));
             } else if(input.equals("list players")){
-                model.getPlayers();
+                model.getPlayers().stream()
+                    .forEach(a -> System.out.println(a));
             } else if(input.equals("scene")){
-                model.getScene();
+                System.out.println(
+                    model.getScene()
+                );
             } else if(input.matches("upgrade (.+)")){
                 try {
                     int rank = Integer.parseInt(input.substring(5, input.length()).trim());
@@ -102,20 +121,22 @@ public class TerminalController {
     //let user choose player names/colors
     //make a list of players from that information
     //pass it into a new ActionManager
-    private ActionManager initModel(){        
+    private ActionManager initModel(){  
+        System.out.println("Welcome to Deadwood!");      
         ArrayList<Player> players = new ArrayList<Player>();
-        Scanner scan = new Scanner(System.in);
+
         if(numOfPlayers == null){
-            System.out.println("How many player?");
-            numOfPlayers = scan.nextInt();
+            System.out.println("How many players?");
+            numOfPlayers = sc.nextInt();
         }
         if(numOfPlayers < 2 || numOfPlayers > 8){
-            scan.close();
+            sc.close();
             throw new IllegalArgumentException("Invalid number of players.");
         }
-        for(int i = 0; i <= numOfPlayers; i++){
+        sc.nextLine();
+        for(int i = 1; i <= numOfPlayers; i++){
             System.out.println("What is your name?");
-            String playerName = scan.nextLine();
+            String playerName = sc.nextLine();
             if(!players.stream().anyMatch(p -> p.getName().equals(playerName))) { 
                 /* System.out.println("Choose one color");
                 String playerColor = scan.nextLine(); */
@@ -125,9 +146,6 @@ public class TerminalController {
                 i--;
             }
         }
-
-
-        scan.close();
         return new ActionManager(players);
     }
 }
