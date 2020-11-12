@@ -12,4 +12,8 @@ public class Trailers extends Area {
     public String getAreaSummary() {
         return "in Trailers";
     }
+
+    public String toString() {
+        return "Trailers";
+    }
 }

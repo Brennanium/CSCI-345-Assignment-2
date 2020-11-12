@@ -20,6 +20,7 @@ public class Player{
     } */
     public Player(String pName){
         this.name = pName;
+        this.pRank = 1;
     }
 
     public String getColor(){
@@ -120,7 +121,7 @@ public class Player{
                 "Player: %s %nRank: %d %nCredits: %d %nDollars: %d %n" +  
                 "Number of Practice Chips: %d %nNumber of Successful Scenes: %d %n" +
                 "Role: %s %nCurrent Area: %s %n", 
-                name, pRank, credits, dollars, practiceChips, successfulScenes, role, currentArea);
+                name, pRank, credits, dollars, practiceChips, successfulScenes, role.getRoleName(), currentArea);
         } else {
             str = String.format(
                 "Player: %s %nRank: %d %nCredits: %d %nDollars: %d %n" +  

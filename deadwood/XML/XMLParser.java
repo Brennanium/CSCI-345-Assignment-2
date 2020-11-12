@@ -221,7 +221,7 @@ public class XMLParser {
 
          Node sceneNode = children.item(1);
          int sceneNum = Integer.parseInt(sceneNode.getAttributes().getNamedItem("number").getNodeValue());
-         String sceneDescr = sceneNode.getTextContent();
+         String sceneDescr = sceneNode.getTextContent().trim();
          
          NodeList parts = card.getElementsByTagName("part");
          //get roles
@@ -231,7 +231,7 @@ public class XMLParser {
             
             String partName = part.getAttributes().getNamedItem("name").getNodeValue();
             int partLevel = Integer.parseInt(part.getAttributes().getNamedItem("level").getNodeValue());
-            String lineDescr = part.getTextContent();
+            String lineDescr = part.getTextContent().trim();
             
             /* else if("area".equals(sub.getNodeName())){
                int areaCoordX = Integer.parseInt(sub.getAttributes().getNamedItem("x").getNodeValue());

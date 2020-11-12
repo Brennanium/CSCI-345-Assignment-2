@@ -54,4 +54,9 @@ public class CastingOffice extends Area {
         return "in Casting Office";
     }
 
+
+    public String toString() {
+        return "Casting Office";
+    }
+
 }

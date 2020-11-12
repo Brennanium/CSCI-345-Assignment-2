@@ -60,7 +60,11 @@ class Board {
         ArrayList<Set> sets = getSets();
 
         if(sets.size() <= undealtSceneCards.size()){
-            sets.forEach(a -> a.setSceneCard(getRandomSceneCard()));
+            sets.forEach(a -> {
+                SceneCard rand = getRandomSceneCard();
+                rand.dealScene();
+                a.setSceneCard(rand);
+            });
         }        
     }
     public Area getAreaForString(String areaString) {
@@ -91,10 +95,19 @@ class Board {
                 .anyMatch(a -> a.getName().equalsIgnoreCase(area.getName()));
     }
 
-
-    public String toString() {
-        return "";
+    public int getNumberOfActiveScenes(){
+        int i = 0;
+        for(Set a : getSets()){
+            if(a.hasActiveScene()) {
+                i++;
+            }
+        }
+        return i;
     }
+
+    /* public String toString() {
+        return "";
+    } */
 
     public static Board getInstance() {
         return instance;

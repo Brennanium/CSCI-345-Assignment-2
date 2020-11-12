@@ -43,9 +43,9 @@ public class Role {
     }
 
     public String toString() {
-        //make a sentence or list
+        //add onCard 
         String str = String.format(
-            "Role Name: %s %n Rank: %d %n Description: \"%s\" %n", roleName, rank, description);
+            "Role Name: %s %nRank: %d %nDescription: \"%s\" %n", roleName, rank, description.trim());
         return str;
     }
 }

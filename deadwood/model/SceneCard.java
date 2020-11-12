@@ -20,7 +20,6 @@ public class SceneCard {
 
     public SceneCard() {
 	}
-
 	// getters
     public String getSceneName() {
         return sceneName;
@@ -49,15 +48,25 @@ public class SceneCard {
     public Role[] getOnCardRoles(){
       return onCardRoles;
     }
-
+    
+    public int getOnCardRolesCount(){
+        return onCardRoles.length;
+    }
+      
     public Role getRoleForString(String roleString){
         for(int i = 0; i < onCardRoles.length; i++){
             if(onCardRoles[i].getRoleName().equalsIgnoreCase(roleString)){
                   return onCardRoles[i];
             }
         }
-
         return null;
+    }
+
+    public void dealScene() {
+        isActive = true;
+    }
+    public void wrapScene() {
+        isActive = false;
     }
 
     public String toString(){

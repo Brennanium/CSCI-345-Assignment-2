@@ -32,17 +32,23 @@ public class TerminalController {
     }
 
     private void gameLoop(){
-        System.out.println("The game has started!");
+        System.out.println("\n\nThe game has started!");
         System.out.println(model.getCurrentPlayer().getName() + 
             " has the first turn.");  
+        //System.out.print(" > ");
         String userInput = "";
+        //sc.nextLine();        
         
-        while(!userInput.equalsIgnoreCase("quit") && sc.hasNext()) {
+        while(true) {
+            if(userInput.equalsIgnoreCase("quit")) {
+                break;
+            }
+            //userInput = sc.nextLine();  
+            System.out.print(" > ");
+            //System.out.print("");
             userInput = sc.nextLine();        
             dealWithUserInput(userInput);    
         }
-
-
         sc.close();
     }
 
@@ -60,15 +66,15 @@ public class TerminalController {
                 );
             } else if(input.equals("where everyone")){
                 model.getPlayerAreas().stream()
-                    .forEach(a -> System.out.println(a));
+                    .forEach(a -> System.out.println(a.getAreaSummary()));
             } else if(input.equals("where")){
                 System.out.println(
-                    model.getCurrentArea()
+                    model.getCurrentArea().getAreaSummary()
                 );
             } else if(input.equals("act")){
-                //System.out.println(
-                    model.act();
-                //);
+                System.out.println(
+                    model.act()
+                );
             } else if(input.equals("role")){
                 System.out.println(
                     model.getCurrentRole()
@@ -92,7 +98,7 @@ public class TerminalController {
                 );
             } else if(input.matches("upgrade (.+)")){
                 try {
-                    int rank = Integer.parseInt(input.substring(5, input.length()).trim());
+                    int rank = Integer.parseInt(input.substring(7, input.length()).trim());
                     model.upgrade(rank);
                 } catch(NumberFormatException numExc) {
                     System.out.println("Invalid number.");
@@ -109,9 +115,11 @@ public class TerminalController {
                 model.takeRole(name);
             } else if(input.equals("end")){
                 model.end().stream()
-                    .forEach(ev -> System.out.println(ev));
+                    .forEach(ev -> {
+                        if(ev != null) System.out.println(ev);
+                    });
             } else {
-                System.out.println("Invalid invalid command");
+                System.out.println("Invalid command");
             }
         } catch(InvalidActionException exc) {
                 System.out.println("Invalid Action: " + exc.getReason());
@@ -148,5 +156,9 @@ public class TerminalController {
         }
         return new ActionManager(players);
     }
+
+
+
+    
 }
 

@@ -14,11 +14,8 @@ public abstract class Area {
     private int coordH;
     private int coordW; */
 
-    public Area(String name, ArrayList<Area> neighbors, Role[] roles) {
-
-    }
-
     public Area(String name) {
+        occupants = new ArrayList<Player>();
         areaName = name;
     }
 
