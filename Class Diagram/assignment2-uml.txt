@@ -150,6 +150,12 @@ class Role {
 }
 
 class SceneCard {
+    int -sceneBudget;
+    private Role[] onCardRoles;
+    private boolean isActive;
+    private int sceneNumber;
+    private String sceneDescr;
+    private String image;
     -sceneName: String
     -difficulty: int
     -sceneValue: int
@@ -211,6 +217,21 @@ class Board {
     -shuffleSceneCards(): void
     -searchArea(String): Area
 }
+class XMLParser{
+    -areas: ArrayList<Area>
+
+    +getDocFromFile(String filename): Document
+    +readAreaData(Document d): ArrayList<Area>
+    -addNeighbors(Area area, NodeList neighborNodes): void
+    +readSceneData(Document d): ArrayList<SceneCard>
+}
+
+class Deadwood{
+
+
+    +main(String[] args): void
+}
+
 /'
 maybe?
 class ReturnData {
