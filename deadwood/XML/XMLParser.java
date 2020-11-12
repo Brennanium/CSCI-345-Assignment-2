@@ -224,6 +224,7 @@ public class XMLParser {
          String sceneDescr = sceneNode.getTextContent().trim();
          
          NodeList parts = card.getElementsByTagName("part");
+         
          //get roles
          for (int j=2; j< parts.getLength(); j++){
             
@@ -253,14 +254,10 @@ public class XMLParser {
          scene = new SceneCard(cardName, sceneNum, budget, sceneDescr, roleInfo.toArray(new Role[0]), image); 
          //add new scene to ArrayList
          sceneInfo.add(scene);
-      }//for book nodes
+      }
 
       return sceneInfo;
    
    }// method
-
-    
-
-
 
 }//class
