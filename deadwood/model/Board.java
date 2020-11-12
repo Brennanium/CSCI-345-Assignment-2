@@ -13,7 +13,8 @@ import org.w3c.dom.Document;
 
 //singleton class
 class Board {
-    private final String DEFAULT_XML_FILEPATH = "./CSCI-345-Assignment-2/deadwood/XML/";
+    private final String DEFAULT_XML_FILEPATH = "./CSCI-345-Assignment-2/deadwood/XML/"; //from VSCode
+    //private final String DEFAULT_XML_FILEPATH = "./deadwood/XML/"; //from terminal
 
     public static Board instance = new Board();
     
