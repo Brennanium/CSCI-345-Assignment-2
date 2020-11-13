@@ -5,218 +5,245 @@ skinparam circledCharacterFontSize 0
 skinparam monochrome true
 
 
+abstract class Area {
+    -String areaName;
+    #ArrayList<Player> occupants;
+    -ArrayList<Area> neighbors;
+    -boolean isSet;
 
-class GameB { 
-    -board: Board
-    -players: Player[]
-    -activePlayer: Player
-    -daysRemaining: int
-
-    +getCurrentPlayer(): Player
-    +getPlayerAreas(): Player[]
-    +move()
-    +takeRole()
-    +act()
-    +rehearse()
-    +upgrade()
-    +endTurn()
-    -checkStates()
-    -wrapDay()
-    -wrapGame()
-}
-class PlayerB { 
-    -name: String
-    -role: Role
-    -currentArea: Area
-
-    +move()
-    +takeRole()
-    +act()
-    +rehearse()
-    +upgrade()
-
-    +getName()
-}
-class BoardB {
-    -areas: Areas[]
-    -undealtSceneCards: SceneCard[]
-    -dealtSceneCards: SceneCard[]
-
-    +setupAreas()
-    +dealSceneCards()
-    +getCountRemainingScenes()
-    -shuffleSceneCards
-    +toString()
-}
-class AreaB {
-    -name: String
-    -shotTokenCount: int
-    -scene: SceneCard
-    -extraRoles: Role[]
-    -left: Area
-    -right: Area
-    -up: Area
-    -down: Area
-
-    +isValidMove()
-    +wrapScene()
-
-    +getName()
-    +getShotTokenCount()
-    +successfulShot()
-}
-class SceneCardB {
-    -starringRoles: Role[]
-    -isFlipped: boolean
-
-    +flip()
-}
-class RoleB {
-    -name: String
-    -rank: int
-
-    +canAct()
-}
-class TextProgramControllerB {
-    -game: Game
-
-    +main()
-    -parseInput()
-    -formatResponse()
+    +Area(String name)
+    
+    +String getName()
+    +boolean getIsSet()
+    +boolean isNeighbor(Area area)
+    +boolean isCastingOffice()
+    +void addPlayer(Player p)
+    +void setNeighbors(ArrayList<Area> neighbors)
+    +ArrayList<Area> getNeighbors()
+    +void removePlayer(Player p)
+    +{abstract} String getAreaSummary()
+    +String toString()
 }
 
+class CastingOffice {
+    -HashMap<Integer, Integer> moneyForRank;
+    -HashMap<Integer, Integer> creditsForRank;
+    
+    +CastingOffice(HashMap<Integer, Integer> moneyForRank, HashMap<Integer, Integer> creditsForRank)
 
+    +Integer getMoneyForRank(int rank)
+    +Integer getCreditsForRank(int rank)
+    +boolean playerCanAffordRank(Player p, int rank)
+    +ArrayList<String> getRankUpgradeStrings()
+    +String getAreaSummary()
+    +String toString()
+}
 
-class Area {
-    -areaName: String
-    -occupants: ArrayList<Player>
-    -neighbors: Area[]
-    -offCardRoles: Role[]
-    -shotTokenCount: int
+class Set{
+    -offCardRoles: Role[] 
+    -maxShotTokenCount: int 
+    -shotTokenCount: int 
+    -scene: SceneCard 
 
-    +checkIsNeighbor(Area): boolean
-    +checkArea(): boolean
-    +addPlayer(Player): void
-    +removePlayer(Player): void
-    +takeRole(String, Player): boolean
-    +act(String, Player): boolean
+    +Set(String name, int maxShotTokenCount, Role[] roles)
     +getShotTokenCount(): int
-    -searchRole(String): boolean
+    +getOffCardRoles(): Role[]
+    +removeShotToken(): void
+    +getBudget(): int
+    +setSceneCard(SceneCard scene): void
+    +getRoleForString(String roleString): Role
+    +getRoles(): ArrayList<Role>
+    +isRoleFree(Role role): boolean
+    +hasActiveScene(): boolean
+    +checkWrapScene(): EndSceneEvent
+    -wrapScene(): EndSceneEvent
+    +reset(): void
+    +getPlayersWorkingOnCard(): ArrayList<Player>
+    +getPlayersWorkingOffCard(): ArrayList<Player>
+    +getAreaSummary(): String
+    +getRolesInfo(): String
+    +getSceneInfo(): String
+    +rollDie(): int
+}
+
+class Trailers {
+    +Trailers()
+    +String getAreaSummary()
+    +String toString()
+}
+
+class ActionManager {
+    -Game game;
+    
+    +ActionManager(ArrayList<Player> players)
+    +Event move(String areaString) 
+    +Event takeRole(String roleString)
+    +ActEvent act()
+    +boolean rehearse()
+    +UpgradeEvent upgrade(int desiredRank)
+    +ArrayList<Event> end()
+    -int rollDie()
+	+Player getCurrentPlayer()
+    +Area getCurrentArea()
+    +ArrayList<Area> getAreas()
+	+ArrayList<Role> getRoles()
+	+ArrayList<String> getRanks()
+	+String getScene()
+	+ArrayList<Player> getPlayers() 
+	+Role getCurrentRole()
+    +ArrayList<Area> getCurrentNeighbors()
+}
+
+class TerminalController {
+    -ActionManager model;
+    -Integer numOfPlayers = null;
+    
+    +TerminalController(int numOfPlayers)
+    +TerminalController()
+    -void gameLoop(){
+    -boolean dealWithUserInput(String input) 
+    -ActionManager initModel()
+    -void printHelp()     
+}
+    
+class Board {
+    -final String DEFAULT_XML_FILEPATH
+    -static Board instance = new Board();
+    -ArrayList<Area> areas;
+    -ArrayList<SceneCard> undealtSceneCards;
+    -ArrayList<SceneCard> dealtSceneCards;
+
+    -Board() 
+    -void getAreasFromXML() 
+    -void getScenesFromXML() 
+    +void addArea(Area newArea) 
+    +void dealSceneCards()
+    +Area getAreaForString(String areaString) 
+    +int getNumberOfRemainingScenes() 
+    +ArrayList<Area> getAreas() 
+    -ArrayList<Set> getSets() 
+    -SceneCard getRandomSceneCard() 
+    -boolean isDuplicateArea(Area area)
+    +int getNumberOfActiveScenes()
+    +static Board getInstance() 
+}
+
+class Game {
+    -board: Board
+    -players: ArrayList<Player>
+    -playersInTurnOrder: ArrayList<Player>
+    -currentPlayer: Player
+    -maxCountDay: int
+    -countDay: int
+    -currentPlayerHasMoved: boolean
+    -currentPlayerHasActed: boolean
+    -currentPlayerHasRehearsed: boolean
+    -currentPlayerHasUpgraded: boolean
+    -currentPlayerHasTakenRole: boolean
+
+    +Game(ArrayList<Player> players)
+    +setNextPlayer(): void
+    +endSceneCheck(): EndSceneEvent
+    +endDayCheck(): EndDayEvent 
+    -wrapDay(): EndDayEvent 
+    +endGameCheck(): EndGameEvent 
+    -wrapGame(): EndGameEvent 
+    +returnToTrailer(): void
+    +getAreaForString(String areaString): Area
+    +getCurrentPlayer(): Player
+    +getNumOfPlayers(): int
+    +getPlayers(): ArrayList<Player>
+    +getAreas(): ArrayList<Area>
+    +getHasMoved(): boolean
+    +getHasActed(): boolean
+    +getHasRehearsed(): boolean
+    +getHasUpgraded(): boolean
+    +getHasTakenRole(): boolean
+    +hasMoved(): void
+    +hasRehearsed(): void
+    +hasUpgraded(): void
+    +hasTakenRole(): void
+    +initPlayers(): void
 }
 
 class Player {
-    -playerInfo: PlayerInfo
-    
-    +getPlayerInfo(): PlayerInfo
-    +rehearse(): void
-    +act(): void
-    +move(Area): void
-    +upgrade(Area, Bank): void
-    +setRole(Role): void
-    +setArea(Area): void
-}
 
-class PlayerInfo {
-    -name: String
-    -rank: int
-    -role: Role
-    -money: int
-    -credits: int
-    -successfulScenes: int
-    -currentArea: Area
-    -countRehearse: int
+    -String name;
+    -int pRank;
+    -Role role;
+    -int dollars;
+    -int credits;
+    -int successfulScenes;
+    -Area currentArea;
+    -int practiceChips;
+    -String color;
 
-    +getRole(): String
-    +getScore(): int
-    +getCredit(): double
-    +setRole(Role): void
-    +checkAct(): boolean
-    +setArea(Area): void
+    +Player(String pName)
+    +String getColor()
+    +String getName()
+    +int getRank()
+    +Role getRole()
+    +int getDollars()
+    +int getCredits()
+    +int getCurrentScore()
+    +int getSuccessfulScenes()
+    +Area getCurrentArea()
+    +int getPracticeChips()
+    +void setRank(int newRank)
+    +void setRole(Role roleName)
+    +void addPracticeChip()
+    +void rehearse()
+    +void resetPracticeChips()
+    +void setArea(Area areaName)
+    +void pay(int dollars, int credits)
+    +void wrapScene()
+    +boolean canAfford(int dollars, int credits)
+    +void buy(int dollars, int credits)
+    +boolean isRoleValid(Role checkRank)
+    +String toString()
 }
 
 class Role {
-    -rank: int
-    -roleName: String
-    -availability: boolean
-    -credit: double
-    -level: int
-    -onCard: boolean
+    -int rank;
+    -String roleName;
+    -boolean onCard;
+    -String description;
 
-    +checkAvailibity(): boolean
-    +checkOnCard(): boolean
-    +workSucceed(): boolean
-    +getLevel(): int
-    +checkRank(Player): boolean
+    +Role(String roleName, int rank, String description, boolean onCard) 
+    +Role()
+	+boolean checkOnCard()
+    +String getDescription() 
+    +boolean checkRank(Player pRank)
+    +int getRank()
+    +String getRoleName() 
+    +String toString()  
 }
 
-class SceneCard {
-    int -sceneBudget;
-    private Role[] onCardRoles;
-    private boolean isActive;
-    private int sceneNumber;
-    private String sceneDescr;
-    private String image;
-    -sceneName: String
-    -difficulty: int
-    -sceneValue: int
-    -onCardRoles: Role[]
+class SceneCard{
+    -String sceneName;
+    -int sceneBudget;
+    -Role[] onCardRoles;
+    -boolean isActive;
+    -int sceneNumber;
+    -String sceneDescr;
+    -String image;
 
-    +getAvailRole(): Role[]
-    +getActor(): Player[]
-    +getDifficulty(): int
+    +SceneCard(String name, int number, int budget, String descr, Role[] roles, String img)
+    +SceneCard()
+    +String getSceneName() 
+    +int getsceneNumber()
+    +String getDescr()
+    +int getBudget() 
+    +String getImageString()
+    +boolean getIsActive() 
+    +Role[] getOnCardRoles()
+    +int getOnCardRolesCount()
+    +Role getRoleForString(String roleString)
+    +void dealScene() 
+    +void wrapScene() 
+    +String toString()
 }
 
-class Bank{
-    -money: double
-    -credit: double
-    -token: int
-
-    +giveMoney(): double
-    -calcMoney(): double
-    -updateCredits(): double
-}
-
-class GameManager {
-    -board: Board
-    -playerManager: PlayerManager
-    -countDay: int
-
-    +endDayCheck(countDay): boolean
-    +constructScene(): void
-    +constructBoard(): void
-    -calcScore(Bank): double
-    +setScene(): void
-    +getCurrentPlayer(): PlayerInfo
-    +getPlayerAreas(): Player[]
-    +move(String): boolean
-    +takeRole(String): int 
-    /' -1 = invalid, 0 = fail, 1 = success '/
-    +act(): int[] 
-    /' 
-    arr[0]: -1 = invalid, 0 = fail, 1 = success 
-    arr[1]: $ amount
-    arr[2]: credit amount
-    '/
-    +rehearse()
-    +upgrade()
-    +endTurn()
-    -checkStates()
-    -wrapDay()
-    -wrapGame()
-}
-class Board {
-    -areas: Area[]
-    -undealtSceneCards: SceneCard 
-    -dealtSceneCards: SceneCard
-
-    +move(String, Player): boolean
-    +setupAreas(): void
-    +dealSceneCards(): void
-    +getNumberOfRemainingScenes(): int
-    +toString(): String
-    -shuffleSceneCards(): void
-    -searchArea(String): Area
-}
 class XMLParser{
     -areas: ArrayList<Area>
 
@@ -226,48 +253,128 @@ class XMLParser{
     +readSceneData(Document d): ArrayList<SceneCard>
 }
 
+class XMLTest{
+   +static void main(String args[])
+}
+
 class Deadwood{
-
-
-    +main(String[] args): void
+    +static void main(String[] args)
 }
 
-/'
-maybe?
-class ReturnData {
-    invalid: boolean
-    didSucceed: boolean
-    money: int
-    credits: int
-    playerInfo: PlayerInfo
+abstract class Event {
+    +{abstract} String toString();
 }
-'/
 
-/' ask about fames?'/
+class ActEvent {
+    +Player affectedPlayer;
+    +boolean success;
+    +int money;
+    +int credits;
 
-' Class Connections Brennan
-GameB --* "1" TextProgramControllerB
-PlayerB --* "2..8" GameB
-BoardB --* "1" GameB
-SceneCardB --* "40" BoardB
-SceneCardB --o "0..1" AreaB
-RoleB --o "0..4" AreaB
-RoleB --o "0..1" PlayerB
-RoleB --o "2..3" SceneCardB
-AreaB --* "12" BoardB
-AreaB --* "1" PlayerB
+    +ActEvent(Player affectedPlayer, boolean success, int money, int credits)
+    +String toString()
+}
 
-' Class Connections Thannaree
-SceneCard --* "40" Board
-Area --* "12" Board
-Board --* "1" GameManager
-Role --o "0..4" SceneCard
-SceneCard --> Area
-Area --> GameManager
-Bank --> GameManager
-Role "1" -- "1" PlayerInfo
-PlayerInfo --* Player
-Player --* "2..8" GameManager
-Board --> Player
-GameManager --* "1" Controller
+class EndDayEvent {
+    +int daysLeft;
+    +int maxDays;
+
+    +EndDayEvent(int daysLeft, int maxDays)
+    +String toString()
+}
+
+class EndGameEvent {
+    -ArrayList<Player> players;
+
+    +EndGameEvent(ArrayList<Player> players)
+    -void sortPlayers()
+    +String toString()
+}
+
+class EndSceneEvent {
+    -ArrayList<Player> players;
+    +HashMap<Player,Integer> moneyForPlayer;
+    -Set currentArea;
+    -SceneCard scene;
+
+    +EndSceneEvent(
+        ArrayList<Player> players, 
+        HashMap<Player,Integer> moneyForPlayer, 
+        Set currentArea,
+        SceneCard scene)
+    -void sortPlayers()
+    +String toString()
+}
+
+class UpgradeEvent {
+    -Player affectedPlayer;
+    -int oldRank;
+    -int newRank;
+
+    +UpgradeEvent(Player affectedPlayer, int oldRank, int newRank)
+    +String toString()
+}
+
++class InvalidActionException {
+    -String reason;
+
+    +InvalidActionException(String message) 
+    +String getReason()
+}
+
+' Class Connections
+
+' Area Classes
+Area <|-- CastingOffice
+Area <|-- Set
+Area <|-- Trailers
+Area "2..8" o--> "1" Player
+CastingOffice <-- InvalidActionException
+Set "1..4" o-- "0..1" Role
+Set "0..1" o-- "0..1" SceneCard
+
+' Event Classes
+Event <|-- ActEvent
+Event <|-- EndDayEvent
+Event <|-- EndGameEvent
+Event <|-- EndSceneEvent
+Event <|-- UpgradeEvent
+
+' Model Classes
+ActionManager "1" *-- "1" Game
+ActionManager <-- Player
+ActionManager <-- Role
+ActionManager <-- SceneCard
+ActionManager <-- Player
+ActionManager <-- Area
+ActionManager <-- Event
+ActionManager <-- InvalidActionException
+
+Board "12" *-- "1" Area
+Board "40" *-- "1" SceneCard
+Board <-- Role
+Board <-- XMLParser
+
+Game "1" o-- "1" Board
+Game "2..8" *-- "1" Player
+Game <-- Area
+Game <-- Event
+Game <-- Role
+Game <-- SceneCard
+
+Player "1" o--> "1" Role
+' Player "1" o-- "2..8" Area
+
+' Role <-- Player
+
+SceneCard "1..4" o-- "1" Role
+
+XMLTest <-- XMLParser
+
+Deadwood <-- TerminalController
+
+TerminalController "1" *-- "1" ActionManager
+TerminalController <-- Event
+TerminalController <-- Area
+TerminalController <-- InvalidActionException
 @enduml
