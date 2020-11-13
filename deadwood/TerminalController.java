@@ -1,7 +1,3 @@
-//Thannaree deal with user input; query the model correctly
-//
-//word on matches ignoring case
-
 package deadwood;
 
 import java.util.ArrayList;
@@ -9,6 +5,8 @@ import java.util.Scanner;
 
 import deadwood.model.*;
 import deadwood.model.areas.*;
+import deadwood.model.events.EndGameEvent;
+import deadwood.model.events.Event;
 
 public class TerminalController {
     private ActionManager model;
@@ -35,26 +33,28 @@ public class TerminalController {
         System.out.println("\n\nThe game has started!");
         System.out.println(model.getCurrentPlayer().getName() + 
             " has the first turn.");  
-        //System.out.print(" > ");
-        String userInput = "";
-        //sc.nextLine();        
+        String userInput = "";      
         
         while(true) {
             if(userInput.equalsIgnoreCase("quit")) {
                 break;
             }
-            //userInput = sc.nextLine();  
+
             System.out.print(" > ");
-            //System.out.print("");
             userInput = sc.nextLine();        
-            dealWithUserInput(userInput);    
+            if(dealWithUserInput(userInput)){
+                break;
+            }   
         }
+        System.out.println("\n\nThanks for playing!  Come back to play soon!");
         sc.close();
     }
 
-    private void dealWithUserInput(String input) {
+    private boolean dealWithUserInput(String input) {
         input = input.toLowerCase();
 
+        boolean gameOver = false;
+        ArrayList<Event> events;
         try {
             if(input.equals("Active player?")){
                 System.out.println(
@@ -64,9 +64,16 @@ public class TerminalController {
                 System.out.println(
                     model.getCurrentPlayer()
                 );
+            } else if(input.equals("quit")){
+                gameOver = false;
+            } else if(input.equals("help")){
+                printHelp();
             } else if(input.equals("where everyone")){
-                model.getPlayerAreas().stream()
-                    .forEach(a -> System.out.println(a.getAreaSummary()));
+                model.getPlayers().stream()
+                    .forEach(p -> {
+                        System.out.print(p.getName() + " ");
+                        System.out.println(p.getCurrentArea().getAreaSummary());
+                    });
             } else if(input.equals("where")){
                 System.out.println(
                     model.getCurrentArea().getAreaSummary()
@@ -81,7 +88,10 @@ public class TerminalController {
                 );
             } else if(input.equals("rehearse")){
                 System.out.println(
-                    model.rehearse()
+                    model.rehearse() ? 
+                        "Rehearsal was successful!  You get one more practice chip." 
+                        :
+                        ""
                 );
             } else if(input.equals("list roles")){ 
                 model.getRoles().stream()
@@ -92,6 +102,21 @@ public class TerminalController {
             } else if(input.equals("list players")){
                 model.getPlayers().stream()
                     .forEach(a -> System.out.println(a));
+            } else if(input.equals("list areas")){
+                model.getAreas().stream()
+                    .forEach(a -> {
+                        System.out.print(a.getName());
+                        if(a instanceof Set) {
+                            System.out.print(
+                                ((Set)a).hasActiveScene() ? 
+                                "" : 
+                                " (WRAPPED)");
+                        }
+                        System.out.println();
+                    });
+            } else if(input.equals("move")){ 
+                model.getCurrentNeighbors()
+                    .forEach(n -> System.out.println(n.getName()));
             } else if(input.equals("scene")){
                 System.out.println(
                     model.getScene()
@@ -99,31 +124,36 @@ public class TerminalController {
             } else if(input.matches("upgrade (.+)")){
                 try {
                     int rank = Integer.parseInt(input.substring(7, input.length()).trim());
-                    model.upgrade(rank);
+                    System.out.println(model.upgrade(rank));
                 } catch(NumberFormatException numExc) {
                     System.out.println("Invalid number.");
                 }
             } else if(input.matches("move (.+)")){
                 String place = input;
-                //String command = place.substring(0,4);
                 String name = place.substring(5, place.length()).trim();
                 model.move(name);
             } else if(input.matches("work (.+)")){
                 String place = input;
-                //String command = place.substring(0,4);
                 String name = place.substring(5, place.length()).trim();
                 model.takeRole(name);
             } else if(input.equals("end")){
-                model.end().stream()
-                    .forEach(ev -> {
-                        if(ev != null) System.out.println(ev);
-                    });
+                events = model.end();
+                for(Event ev : events) {
+                    if(ev != null) {
+                        System.out.println(ev);
+                        if(ev instanceof EndGameEvent) {
+                            gameOver = true;
+                        }
+                    }
+                }
             } else {
                 System.out.println("Invalid command");
             }
         } catch(InvalidActionException exc) {
                 System.out.println("Invalid Action: " + exc.getReason());
         }
+
+        return gameOver;
     }
 
     //let user choose player names/colors
@@ -146,8 +176,6 @@ public class TerminalController {
             System.out.println("What is your name?");
             String playerName = sc.nextLine();
             if(!players.stream().anyMatch(p -> p.getName().equals(playerName))) { 
-                /* System.out.println("Choose one color");
-                String playerColor = scan.nextLine(); */
                 players.add(new Player(playerName));
             } else {
                 System.out.println("Choose another name!");
@@ -157,8 +185,43 @@ public class TerminalController {
         return new ActionManager(players);
     }
 
-
-
+    private void printHelp(){
+        String help = "- move (string)\n" + 
+            "    move to specified location\n" + 
+            "- move\n" +
+            "    list possible locations to move to\n" +
+            "- act\n" +
+            "    act on a role\n" + 
+            "- work (string)\n" +
+            "    take a specified role\n" + 
+            "- rehearse\n" +
+            "    rehearse your role\n" +
+            "- upgrade (int)\n" +
+            "    upgrade player to specified level\n" +
+            "- scene\n" +
+            "    list details about a scene including roles\n" +
+            "- end\n" +
+            "    end a player's turn\n" +
+            "- active player?\n" +
+            "    list details about active player\n" +
+            "- list roles\n" +
+            "    list details of roles\n" + 
+            "- ist areas\n" +
+            "    list names of all areas on board\n" +
+            "- list ranks\n" +
+            "    list availible ranks to upgrade to\n" + 
+            "- list players\n" +
+            "    list details of all players\n" +
+            "- role\n" +
+            "    lists deatils of the role of the current player\n" + 
+            "- who\n" +
+            "    list current player's details\n" + 
+            "- where\n" + 
+            "    list details about your current location as well as your neighbor area names\n" +
+            "- where everyone\n" + 
+            "    list the areas of all the players\n";
+        System.out.println(help);
+    }
     
 }
 

@@ -8,40 +8,70 @@ import deadwood.model.events.*;
 
 public class Set extends Area{
     private Role[] offCardRoles;
+    private int maxShotTokenCount;
     private int shotTokenCount;
     private SceneCard scene;
 
-    public Set(String name, int shotTokenCount, Role[] roles) {
+
+    /**
+     * 
+     * @param name
+     * @param maxShotTokenCount
+     * @param roles
+     */
+    public Set(String name, int maxShotTokenCount, Role[] roles) {
         super(name);
         
-        this.shotTokenCount = shotTokenCount;
+        this.maxShotTokenCount = maxShotTokenCount;
+        this.shotTokenCount = maxShotTokenCount;
         offCardRoles = roles;
     }
 
-    public Set(){
-        super();
-    }
 
+    /**
+     * 
+     * @return int
+     */
     public int getShotTokenCount() {
         return shotTokenCount;
     }
 
+    /**
+     * 
+     * @return Role[]
+     */
     public Role[] getOffCardRoles(){
         return offCardRoles;
     }
 
+    /**
+     * 
+     */
     public void removeShotToken(){
         shotTokenCount--;
     }
 
+    /**
+     * 
+     * @return int
+     */
     public int getBudget() {
         return scene.getBudget();
     }
 
+    /**
+     * 
+     * @param scene
+     */
     public void setSceneCard(SceneCard scene){
         this.scene = scene;
     }
    
+    /**
+     * 
+     * @param roleString
+     * @return Role
+     */
     public Role getRoleForString(String roleString) { 
      for(int i = 0; i < offCardRoles.length; i++){
         if(offCardRoles[i].getRoleName().equalsIgnoreCase(roleString)){
@@ -52,7 +82,10 @@ public class Set extends Area{
      return scene.getRoleForString(roleString);
    }
 
-    //to do
+    /**
+     * 
+     * @return ArrayList<Role>
+     */
     public ArrayList<Role> getRoles() {
         ArrayList<Role> list = new ArrayList<Role>();
         Collections.addAll(list, offCardRoles);
@@ -61,6 +94,11 @@ public class Set extends Area{
         return list;
     }
 
+    /**
+     * 
+     * @param role
+     * @return boolean
+     */
    public boolean isRoleFree(Role role){
         for(int i = 0; i < occupants.size(); i++){
             if(occupants.get(i).getRole() == role){
@@ -71,10 +109,18 @@ public class Set extends Area{
         return true;
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public boolean hasActiveScene(){
         return scene.getIsActive();
     }
 
+    /**
+     * 
+     * @return EndSceneEvent
+     */
     public EndSceneEvent checkWrapScene(){
         if(scene.getIsActive() && shotTokenCount == 0) {
             return wrapScene();
@@ -83,6 +129,10 @@ public class Set extends Area{
         }
     }
     
+    /**
+     * 
+     * @return EndSceneEvent
+     */
     private EndSceneEvent wrapScene(){
         ArrayList<Player> offCard = getPlayersWorkingOffCard();
         ArrayList<Player> onCard = getPlayersWorkingOnCard();
@@ -111,7 +161,12 @@ public class Set extends Area{
                 player = onCard.get(i % onCard.size());
                 bonus = dice.get(i);
                 player.pay(bonus, 0);
-                bonusForPlayer.put(player, bonus);
+                if(bonusForPlayer.get(player) == null) {
+                    bonusForPlayer.put(player, bonus);
+                } else {
+                    int currentBonus = bonusForPlayer.get(player);
+                    bonusForPlayer.replace(player, currentBonus + bonus);
+                }
             } 
 
             //pay off card roles if there are any
@@ -125,17 +180,32 @@ public class Set extends Area{
         }
 
         //remove everyone's roles
-        //add successful scene #############
-        occupants.forEach(p -> p.setRole(null));
+        occupants.forEach(p -> {
+            p.setRole(null);
+            p.resetPracticeChips();
+        });
         
         //kill the scene
         scene.wrapScene();
 
         offCard.addAll(onCard);
+        offCard.forEach(p -> p.wrapScene());
 
         return new EndSceneEvent(offCard, bonusForPlayer, this, scene);
     }
 
+
+    /**
+     * 
+     */
+    public void reset(){
+        shotTokenCount = maxShotTokenCount;
+    }
+
+    /**
+     * 
+     * @return ArrayList<Player>
+     */
     public ArrayList<Player> getPlayersWorkingOnCard() {
         List<Player> working = occupants.stream()
             .filter(p -> p.getRole() != null && p.getRole().checkOnCard())
@@ -144,6 +214,10 @@ public class Set extends Area{
         return new ArrayList<Player>(working);
     }
     
+    /**
+     * 
+     * @return ArrayList<Player>
+     */
     public ArrayList<Player> getPlayersWorkingOffCard() {
         List<Player> working = occupants.stream()
             .filter(p -> p.getRole() != null && !p.getRole().checkOnCard())
@@ -152,9 +226,13 @@ public class Set extends Area{
         return new ArrayList<Player>(working);
     }
     
+    /**
+     * 
+     * @return String
+     */
     public String getAreaSummary() {
         StringBuffer sb  = new StringBuffer();
-        if(scene != null || scene.getIsActive()){
+        if(scene != null && scene.getIsActive()){
             sb.append(String.format(
                 "in %s shooting %s.%n", getName(), scene.toString()));
         } else {
@@ -166,24 +244,34 @@ public class Set extends Area{
         return sb.toString();
     }
     
+    /**
+     * 
+     * @return String
+     */
     public String getRolesInfo(){
-        String str = "";
+        StringBuffer sb = new StringBuffer();
         if(scene != null && scene.getIsActive() == true){
-            str = "On card roles: \n";
-            for(Role r : scene.getOnCardRoles()) {
-                str += r + " " + (isRoleFree(r) ? "\n" : "  (TAKEN)\n\n");
-            }
-            str += "Off card roles: \n";
             for(Role r : offCardRoles) {
-                str += r + " " + (isRoleFree(r) ? "\n" : "  (TAKEN)\n\n");
+                sb.append(
+                    (isRoleFree(r) ? "" : "(TAKEN): ") + 
+                    r.toString() + "\n");
+            }
+            for(Role r : scene.getOnCardRoles()) {
+                sb.append(
+                    (isRoleFree(r) ? "" : "(TAKEN): ") + 
+                    r.toString()+ "\n");
             }
         } else {
-            str = String.format
-                ("There is no active scene card in %s.%n", getName());
+            sb.append(String.format
+                ("There is no active scene card in %s.%n", getName()));
         }
-        return str;
+        return sb.toString();
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getSceneInfo(){ 
         String str =  "";
         if(scene != null && scene.getIsActive() == true){
@@ -201,6 +289,10 @@ public class Set extends Area{
         return str;
     }
 
+    /**
+     * 
+     * @return int
+     */
     private int rollDie() {
         int min = 1;
         int max = 6;

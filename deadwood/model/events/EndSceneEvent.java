@@ -3,7 +3,6 @@ package deadwood.model.events;
 import java.util.*;
 
 import deadwood.model.*;
-import deadwood.model.areas.*;
 import deadwood.model.areas.Set;
 
 public class EndSceneEvent extends Event {

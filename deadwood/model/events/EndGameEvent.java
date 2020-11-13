@@ -3,17 +3,12 @@ package deadwood.model.events;
 import java.util.*;
 
 import deadwood.model.*;
-import deadwood.model.areas.*;
 
 public class EndGameEvent extends Event {
     private ArrayList<Player> players;
-    private Area currentArea;
-    private Role newRole;
 
-    public EndGameEvent(ArrayList<Player> players, Area currentArea,Role newRole){
+    public EndGameEvent(ArrayList<Player> players){
         this.players = players;
-        this.currentArea = currentArea;
-        this.newRole = newRole;
     }
 
     private void sortPlayers(){
@@ -27,12 +22,12 @@ public class EndGameEvent extends Event {
     public String toString(){
         sortPlayers();
 
-        StringBuffer sb = new StringBuffer("Game Over! \n Scores:\n");
+        StringBuffer sb = new StringBuffer("\n\n\n\nGame Over! \n\n Final Scores:\n");
         int i = 1;
         for(Player p : players) {
             sb.append(String.format(
-                "", "args")
-            );
+                "%d. %s \t Score: %d%n", i, p.getName(), p.getCurrentScore()));
+            i++;
         }
         return sb.toString();
     }

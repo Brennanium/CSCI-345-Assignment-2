@@ -1,7 +1,6 @@
 package deadwood.model.events;
 
 import deadwood.model.*;
-import deadwood.model.areas.*;
 
 public class ActEvent extends Event {
     private Player affectedPlayer;

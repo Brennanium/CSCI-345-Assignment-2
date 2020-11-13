@@ -195,7 +195,6 @@ public class XMLParser {
 
       ArrayList<SceneCard> sceneInfo = new ArrayList<SceneCard>();
       SceneCard scene;
-      ArrayList<Role> roleInfo;
       //ArrayList<Area> areas = new ArrayList<Area>();
       //Area area;
 
@@ -204,9 +203,16 @@ public class XMLParser {
       NodeList cards = root.getElementsByTagName("card");
       
 
+      //Element partsNode;
+      NodeList parts;
+      Node part;
+      String roleName;
+      int rank;
+      String description;
+      ArrayList<Role> roles;
+
       //add all the scene cards
       for (int i=0; i<cards.getLength();i++){
-         roleInfo = new ArrayList<Role>();
 
          //reads data from the nodes
          Element card = (Element)cards.item(i);
@@ -223,35 +229,24 @@ public class XMLParser {
          int sceneNum = Integer.parseInt(sceneNode.getAttributes().getNamedItem("number").getNodeValue());
          String sceneDescr = sceneNode.getTextContent().trim();
          
-         NodeList parts = card.getElementsByTagName("part");
+         //NodeList parts = card.getElementsByTagName("part");
          
          //get roles
-         for (int j=2; j< parts.getLength(); j++){
-            
-            Node part = parts.item(j);
-            
-            String partName = part.getAttributes().getNamedItem("name").getNodeValue();
-            int partLevel = Integer.parseInt(part.getAttributes().getNamedItem("level").getNodeValue());
-            String lineDescr = part.getTextContent().trim();
-            
-            /* else if("area".equals(sub.getNodeName())){
-               int areaCoordX = Integer.parseInt(sub.getAttributes().getNamedItem("x").getNodeValue());
-               int areaCoordY = Integer.parseInt(sub.getAttributes().getNamedItem("y").getNodeValue());
-               int areaCoordH = Integer.parseInt(sub.getAttributes().getNamedItem("h").getNodeValue());
-               int areaCoordW = Integer.parseInt(sub.getAttributes().getNamedItem("w").getNodeValue());  
-            }
+         //partsNode = (Element)card.getElementsByTagName("parts").item(0);
+         parts = card.getElementsByTagName("part");
+         roles = new ArrayList<Role>();
+         for (int j=0; j< parts.getLength(); j++){
+            part = parts.item(j);
 
+            roleName = part.getAttributes().getNamedItem("name").getNodeValue();
+            rank = Integer.parseInt(part.getAttributes().getNamedItem("level").getNodeValue());
+            description = part.getTextContent();
 
-            else if("line".equals(sub.getNodeName())){
-               String lineDescr = sub.getTextContent();
-            }*/  
-
-             //add new role to ArrayList
-            roleInfo.add(new Role(partName, partLevel, lineDescr, false));
-         } //for childnodes
+            roles.add(new Role(roleName, rank, description, true));
+         }
          
          //initialize new SceneCard
-         scene = new SceneCard(cardName, sceneNum, budget, sceneDescr, roleInfo.toArray(new Role[0]), image); 
+         scene = new SceneCard(cardName, sceneNum, budget, sceneDescr, roles.toArray(new Role[0]), image); 
          //add new scene to ArrayList
          sceneInfo.add(scene);
       }

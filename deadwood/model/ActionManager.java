@@ -9,12 +9,30 @@ import java.util.*;
 public class ActionManager {
     private Game game;
     
+    /**
+     * Constructor
+     * 
+     * @param players
+     */
     public ActionManager(ArrayList<Player> players){
         game = new Game(players);
     }
     
-    //do stuffs
-    public MoveEvent move(String areaString) throws InvalidActionException {
+    /**
+     * 
+     * 
+     * @param areaString
+     * @return Event
+     * @throws InvalidActionException
+     */
+    public Event move(String areaString) throws InvalidActionException {
+        if(areaString.equalsIgnoreCase("Casting Office")){
+            areaString = "office";
+        }
+        if(areaString.equalsIgnoreCase("Trailers")){
+            areaString = "trailer";
+        }
+
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
 
@@ -34,10 +52,10 @@ public class ActionManager {
                         game.hasMoved();
 
                     } else {
-                        throw new InvalidActionException("You are not close enough to go there.");
+                        throw new InvalidActionException(currentPlayer.getName() + " is not close enough to go there.");
                     }
                 } else {
-                    throw new InvalidActionException("You has already moved.");
+                    throw new InvalidActionException(currentPlayer.getName() + " has already moved.");
                 }
             } else{
                 throw new InvalidActionException("That area doesn't exist.");
@@ -49,7 +67,13 @@ public class ActionManager {
         return null;
     }
 
-    public TakeRoleEvent takeRole(String roleString) throws InvalidActionException {
+    /**
+     * 
+     * @param roleString
+     * @return Event
+     * @throws InvalidActionException
+     */
+    public Event takeRole(String roleString) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
 
         if(!(currentPlayer.getCurrentArea() instanceof Set)) 
@@ -86,6 +110,12 @@ public class ActionManager {
         return null;
     }
 
+
+    /**
+     * 
+     * @return ActEvent
+     * @throws InvalidActionException
+     */
     public ActEvent act() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set))
@@ -100,7 +130,7 @@ public class ActionManager {
                 if(currentArea.hasActiveScene()){
                     if(!game.getHasActed()){
                         if(!game.getHasTakenRole()) {
-                            boolean succeeds = diceRoll >= (currentArea.getBudget() + currentPlayer.getPracticeChips());
+                            boolean succeeds = (diceRoll + currentPlayer.getPracticeChips()) >= currentArea.getBudget();
                             game.hasActed();
                             game.hasRehearsed();
                             if(currentRole.checkOnCard() && succeeds){
@@ -137,6 +167,12 @@ public class ActionManager {
         }
     }
 
+
+    /**
+     * 
+     * @return boolean
+     * @throws InvalidActionException
+     */
     public boolean rehearse() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof Set))
@@ -164,6 +200,13 @@ public class ActionManager {
         }
     }
 
+
+    /**
+     * 
+     * @param desiredRank
+     * @return UpgradeEvent
+     * @throws InvalidActionException
+     */
     public UpgradeEvent upgrade(int desiredRank) throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         if(!(currentPlayer.getCurrentArea() instanceof CastingOffice)) 
@@ -194,6 +237,10 @@ public class ActionManager {
         }
     }
     
+    /**
+     * 
+     * @return ArrayList<Event>
+     */
     public ArrayList<Event> end() {
         ArrayList<Event> events = new ArrayList<Event>();
         EndSceneEvent sceneEnd = game.endSceneCheck();
@@ -210,25 +257,45 @@ public class ActionManager {
         return events;
     }
 
+    /**
+     * 
+     * @return int
+     */
     private int rollDie() {
         int min = 1;
         int max = 6;
         return (int) (Math.random() * (max - min + 1) + min);
     }
 
-    //get stuffs
+    /**
+     * 
+     * @return Player
+     */
 	public Player getCurrentPlayer() {
         return game.getCurrentPlayer();
     }
-
+    
+    /**
+     * 
+     * @return Area
+     */
     public Area getCurrentArea(){
         return game.getCurrentPlayer().getCurrentArea();
     }
 
-	public ArrayList<Area> getPlayerAreas() {
-        return game.getPlayerAreas();
-	}
+    /**
+     * 
+     * @return ArrayList<Area>
+     */
+    public ArrayList<Area> getAreas(){
+        return game.getAreas();
+    }
 
+    /**
+     * 
+     * @return ArrayList<Role>
+     * @throws InvalidActionException
+     */
 	public ArrayList<Role> getRoles() throws InvalidActionException{
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
@@ -241,6 +308,11 @@ public class ActionManager {
         }        
 	}
 
+    /**
+     * 
+     * @return ArrayList<String>
+     * @throws InvalidActionException
+     */
 	public ArrayList<String> getRanks() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
@@ -251,7 +323,12 @@ public class ActionManager {
                 String.format("Player %s not in Casting Office.", currentPlayer.getName()));
         }
 	}
-
+    
+    /**
+     * 
+     * @return String
+     * @throws InvalidActionException
+     */
 	public String getScene() throws InvalidActionException {
         Player currentPlayer = game.getCurrentPlayer();
         Area currentArea = currentPlayer.getCurrentArea();
@@ -263,11 +340,33 @@ public class ActionManager {
         }       
 	}
 
+    /**
+     * 
+     * @return ArrayList<Player>
+     */
 	public ArrayList<Player> getPlayers() {
         return game.getPlayers();
 	}
 
-	public Role getCurrentRole() {
-        return game.getCurrentPlayer().getRole();
-	}
+    /**
+     * 
+     * @return Role
+     * @throws InvalidActionException 
+     */
+	public Role getCurrentRole() throws InvalidActionException {
+        Role role = game.getCurrentPlayer().getRole();
+        if(role != null) {
+            return role;
+        } else {
+            throw new InvalidActionException("You don't currently have a role.");
+        }
+    }
+    
+    /**
+     * 
+     * @return ArrayList<Area>
+     */
+    public ArrayList<Area> getCurrentNeighbors(){
+        return game.getCurrentPlayer().getCurrentArea().getNeighbors();
+    }
 }

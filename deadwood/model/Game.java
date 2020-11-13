@@ -1,5 +1,3 @@
-//Brennan
-
 package deadwood.model;
 
 import java.util.*;
@@ -15,23 +13,14 @@ public class Game {
     private ArrayList<Player> playersInTurnOrder;
     private Player currentPlayer;
     private Board board;
+    private int maxCountDay;
     private int countDay;
-    private boolean currentPlayerHasMoved;
-    public boolean getHasMoved(){ return currentPlayerHasMoved; }
-    public void hasMoved(){ currentPlayerHasMoved = true; }
-    private boolean currentPlayerHasActed;
-    public boolean getHasActed(){ return currentPlayerHasActed; }
-    public void hasActed(){ currentPlayerHasActed = true; }
-    private boolean currentPlayerHasRehearsed;
-    public boolean getHasRehearsed(){ return currentPlayerHasRehearsed; }
-    public void hasRehearsed(){ currentPlayerHasRehearsed = true; }
-    private boolean currentPlayerHasUpgraded;
-    public boolean getHasUpgraded(){ return currentPlayerHasUpgraded; }
-    public void hasUpgraded(){ currentPlayerHasUpgraded = true; }
-    private boolean currentPlayerHasTakenRole;
-    public boolean getHasTakenRole(){ return currentPlayerHasTakenRole; }
-    public void hasTakenRole(){ currentPlayerHasTakenRole = true; }
 
+    /**
+     * Constructor
+     * 
+     * @param players
+     */
     public Game(ArrayList<Player> players) {
         this.players = players;
 
@@ -47,6 +36,9 @@ public class Game {
         initPlayers();
     }
 
+    /**
+     * resets player turn booleans and sets the next player in turn order
+     */
     public void setNextPlayer() {
         if(currentPlayer == null) {
             currentPlayer = playersInTurnOrder.get(0);
@@ -64,6 +56,11 @@ public class Game {
         currentPlayerHasTakenRole = false;
     }
 
+    /**
+     * 
+     * 
+     * @return EndSceneEvent
+     */
     public EndSceneEvent endSceneCheck() {
         if(currentPlayer.getCurrentArea() instanceof Set) {
             Set currentArea = (Set)currentPlayer.getCurrentArea();
@@ -73,43 +70,59 @@ public class Game {
         return null;
     }
 
+    /**
+     * 
+     * @return EndDayEvent
+     */
     public EndDayEvent endDayCheck() {
-        // The  day  is  over  when  there  is  only  one  scene  left.
-        // This  last  scene  does  not  finish,  and  
-        // there  is  no  further  payment  to  any-one  who  was  still  working  on  it.
-        // Players return to the trailers to play the next day. 
+        if(board.getNumberOfActiveScenes() < 2){
+            return wrapDay();
+        }
 
-        /* if() {
-            wrapDay();
-        } */
-        
         return null;
 
     }
 
-    private void wrapDay() {
+    /**
+     * 
+     * @return EndDyEvent
+     */
+    private EndDayEvent wrapDay() {
         returnToTrailer();
-        /* Return everyone’s die to the Trailers. 
-        Remove the last scene card from the board.
-        Deal ten new scenes onto the board, face down.
-        Replace all the shot counters.  */
+        board.dealSceneCards();
+        countDay--;
+
+        return new EndDayEvent(countDay, maxCountDay);
     }
 
+    /**
+     * 
+     * @return EndGameEvent
+     */
     public EndGameEvent endGameCheck() {
-        if(countDay == 0 || board.getNumberOfRemainingScenes() == 0) {
+        if(countDay == 0) {
             return wrapGame();
         }
         
         return null;
     }
-
+    
+    /**
+     * 
+     * @return EndGameEvent
+     */
     private EndGameEvent wrapGame() {
-        return null;
+
+        return new EndGameEvent(players);
     }
 
+    /**
+     * returns every player to Trailer
+     */
     public void returnToTrailer(){
         players.stream()
             .forEach(p -> {
+                p.setRole(null);
                 p.getCurrentArea().removePlayer(p);
                 Area trailers = getAreaForString("trailer");
                 trailers.addPlayer(p);
@@ -117,29 +130,102 @@ public class Game {
             });
     }
     
+    /**
+     * 
+     * @param areaString
+     * @return Area
+     */
     public Area getAreaForString(String areaString) {
         return board.getAreaForString(areaString);
     }
-
+    
+    /**
+     * 
+     * @return Player
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
     
+    /**
+     * 
+     * @return int
+     */
     public int getNumOfPlayers() {
         return players.size();
     }
 
+    /**
+     * 
+     * @return ArrayList<Player>
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public ArrayList<Area> getPlayerAreas() {
-        List<Area> playerAreas = players.stream()
-            .map(p -> p.getCurrentArea())
-            .collect(Collectors.toList());
-        return new ArrayList<Area>(playerAreas);
+    /**
+     * 
+     * @return ArrayList<Area>
+     */
+    public ArrayList<Area> getAreas() {
+        return board.getAreas();
     }
 
+
+    private boolean currentPlayerHasMoved;
+    /**
+     * 
+     * @return boolean
+     */
+    public boolean getHasMoved(){ return currentPlayerHasMoved; }
+    /**
+     * 
+     */
+    public void hasMoved(){ currentPlayerHasMoved = true; }
+    private boolean currentPlayerHasActed;
+    /**
+     * 
+     * @return boolean
+     */
+    public boolean getHasActed(){ return currentPlayerHasActed; }
+    /**
+     * 
+     */
+    public void hasActed(){ currentPlayerHasActed = true; }
+    private boolean currentPlayerHasRehearsed;
+    /**
+     * 
+     * @return boolean
+     */
+    public boolean getHasRehearsed(){ return currentPlayerHasRehearsed; }
+    /**
+     * 
+     */
+    public void hasRehearsed(){ currentPlayerHasRehearsed = true; }
+    private boolean currentPlayerHasUpgraded;
+    /**
+     * 
+     * @return boolean
+     */
+    public boolean getHasUpgraded(){ return currentPlayerHasUpgraded; }
+    /**
+     * 
+     */
+    public void hasUpgraded(){ currentPlayerHasUpgraded = true; }
+    private boolean currentPlayerHasTakenRole;
+    /**
+     * 
+     * @return boolean
+     */
+    public boolean getHasTakenRole(){ return currentPlayerHasTakenRole; }
+    /**
+     * 
+     */
+    public void hasTakenRole(){ currentPlayerHasTakenRole = true; }
+
+    /**
+     * sets the proper starting rank, credits, and number of days
+     */
     public void initPlayers(){
         setNextPlayer();
         
@@ -149,30 +235,33 @@ public class Game {
             case 4:
                 startingRank = 1;
                 startingCredits = 0;
-                countDay = 4;
+                maxCountDay = 4;
                 break;
             case 5:
                 startingRank = 1;
                 startingCredits = 2;
-                countDay = 4;
+                maxCountDay = 4;
                 break;
             case 6:
                 startingRank = 1;
                 startingCredits = 4;
-                countDay = 4;
+                maxCountDay = 4;
                 break;
             case 7:
             case 8:
                 startingRank = 2;
                 startingCredits = 0;
-                countDay = 4;
+                maxCountDay = 4;
                 break;
             default: 
                 startingRank = 1;
                 startingCredits = 0;
-                countDay = 3;
+                maxCountDay = 3;
                 break;
         }
+
+        countDay = maxCountDay;
+
         players.stream()
             .forEach(p -> {
                 Area trailers = getAreaForString("trailer");

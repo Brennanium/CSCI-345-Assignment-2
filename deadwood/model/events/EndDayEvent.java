@@ -1,21 +1,20 @@
 package deadwood.model.events;
 
-import deadwood.model.*;
-import deadwood.model.areas.*;
 
 public class EndDayEvent extends Event {
-    private Player affectedPlayer;
-    private Area currentArea;
-    private Role newRole;
+    private int daysLeft;
+    private int maxDays;
 
-    public EndDayEvent(Player affectedPlayer,Area currentArea,Role newRole){
-        this.affectedPlayer = affectedPlayer;
-        this.currentArea = currentArea;
-        this.newRole = newRole;
+    public EndDayEvent(int daysLeft, int maxDays){
+        this.daysLeft = daysLeft;
+        this.maxDays = maxDays;
     }
 
-
     public String toString(){
-        return "";
+        int day = maxDays - daysLeft;
+        return String.format(
+            "%s has ended. There are %d days left.%n", 
+            day == maxDays ? "The final day" : "Day " + day, 
+            daysLeft);
     }
 }

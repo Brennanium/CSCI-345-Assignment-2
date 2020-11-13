@@ -15,7 +15,7 @@ public class UpgradeEvent extends Event {
 
     public String toString(){
         String str = String.format
-            ("Congrats %s upgraded from rank %d to rank %d!",
+            ("Congrats! %s has upgraded from rank %d to rank %d!",
             affectedPlayer.getName(), oldRank, newRank);
         return str;
     }
