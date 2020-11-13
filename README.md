@@ -8,39 +8,39 @@ cd bin; java deadwood/Deadwood
 
 
 Commands:
- - move (string)
+ - move (string):
     move to specified location
- - move
+ - move:
     list possible locations to move to
- - act
+ - act:
     act on a role
- - work (string)
+ - work (string):
     take a specified role
- - rehearse
+ - rehearse:
     rehearse your role
- - upgrade (int)
+ - upgrade (int):
     upgrade player to specified level
- - scene
+ - scene:
     list details about a scene including roles
- - end
+ - end:
     end a player's turn
- - active player?
+ - active player?:
     list details about active player
- - list roles
+ - list roles:
     list details of roles
- - ist areas
+ - ist areas:
     list names of all areas on board
- - list ranks
+ - list ranks:
     list availible ranks to upgrade to 
- - list players
+ - list players:
     list details of all players
- - role
+ - role:
     lists deatils of the role of the current player
- - who
+ - who:
     list current player's details
- - where
+ - where:
     list details about your current location as well as your neighbor area names
- - where everyone
+ - where everyone:
     list the areas of all the players
 
 
